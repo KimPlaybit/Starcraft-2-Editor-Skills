@@ -11,7 +11,8 @@ description: Player data patterns, playergroups, alliance setup, race helpers, p
 |---|---|
 | Native function reference | https://mapster.talv.space/galaxy/reference |
 | Galaxy syntax definition | https://github.com/Talv/vscode-sc2-galaxy/blob/master/syntaxes/galaxy.json |
-| SSF codebase (canonical style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
+| **SC2-IngameDevTools (PRIMARY — #1 codebase)** | https://github.com/abrahamYG/SC2-IngameDevTools/tree/main/DevToolsIngame.SC2Mod/Script |
+| SSF codebase (secondary style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
 | Alcyone Frontlines codebase | https://github.com/KimPlaybit/Alcyone_Frontlines/tree/master/ProximaFrontlines.SC2Mod/scripts |
 | NativeLib alliance helpers | `TriggerLibs/NativeLib.galaxy` — `libNtve_gf_SetAlliance`, `libNtve_gf_SetPlayerGroupAlliance`, `libNtve_gf_SetAllianceBetweenTwoPlayerGroups`, `libNtve_gf_PlayerIsEnemy` |
 | Variables guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/037_Variables/ |

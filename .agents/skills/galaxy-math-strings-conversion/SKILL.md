@@ -12,7 +12,8 @@ description: Integer and fixed-point math, trigonometry, random numbers, type co
 | Native function reference | https://mapster.talv.space/galaxy/reference |
 | Per-function reference pages | https://mapster.talv.space/galaxy/reference/`function-name` (e.g. `/text-case`, `/string-case`, `/string-external`) |
 | Galaxy syntax definition | https://github.com/Talv/vscode-sc2-galaxy/blob/master/syntaxes/galaxy.json |
-| SSF codebase (canonical style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
+| **SC2-IngameDevTools (PRIMARY — #1 codebase)** | https://github.com/abrahamYG/SC2-IngameDevTools/tree/main/DevToolsIngame.SC2Mod/Script |
+| SSF codebase (secondary style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
 | NativeLib | `TriggerLibs/NativeLib.galaxy` — `libNtve_gf_Log`, `libNtve_gf_RandomPercent`, `libNtve_gf_ArithmeticIntClamp`, `libNtve_gf_ConvertBooleanToText`, conversion helpers |
 | Math Functions guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/045_Math_Functions/ |
 | SC2Mapster wiki | https://sc2mapster.wiki.gg/ |

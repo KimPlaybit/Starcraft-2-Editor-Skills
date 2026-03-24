@@ -11,13 +11,14 @@ Galaxy is the scripting language used in StarCraft II map/mod development. It is
 
 | Resource | URL |
 |---|---|
+| **SC2-IngameDevTools (PRIMARY codebase — use as #1 example)** | https://github.com/abrahamYG/SC2-IngameDevTools/tree/main/DevToolsIngame.SC2Mod/Script |
 | Native function reference | https://mapster.talv.space/galaxy/reference |
 | GalaxyScript guide (when/how to use script vs GUI) | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/058_GalaxyScript/ |
 | SC2Mapster Galaxy reference | https://sc2mapster.github.io/mkdocs/galaxy/ |
 | Galaxy syntax definition | https://github.com/Talv/vscode-sc2-galaxy/blob/master/syntaxes/galaxy.json |
 | GalaxyScript beginner guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/058_GalaxyScript/ |
 | Multithreading guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/057_Multithreading_with_Action_Definitions/ |
-| SSF codebase (canonical style reference) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
+| SSF codebase (secondary style reference) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
 | Alcyone Frontlines codebase (secondary reference) | https://github.com/KimPlaybit/Alcyone_Frontlines/tree/master/ProximaFrontlines.SC2Mod/scripts |
 | NativeLib helper functions | `TriggerLibs/NativeLib.galaxy` (installed with SC2 editor and the sc2galaxy VS Code extension) |
 | SC2Mapster wiki | https://sc2mapster.wiki.gg/ |
@@ -100,7 +101,128 @@ include "LibHASH"   // no path, no extension — editor resolves from linked dep
 
 ## Naming Conventions
 
-### Standalone map / SC2Map (primary — SSF pattern)
+### ⭐ Handler-module pattern (SC2-IngameDevTools — #1 PRIMARY reference)
+
+This is the **canonical naming convention** for this project. Every module is a self-contained `.galaxy` file with a clear public `ModuleName_Init()` entry point and all internal helpers marked `static`.
+
+| Kind | Convention | Example |
+|---|---|---|
+| **Public module function** | `ModuleName_FunctionName` | `UnitHandler_Init`, `ItemList_FilterListRebuild`, `DevTools_ChatCommandCreate` |
+| **Trigger handler function** | `ModuleNameEvent(bool a, bool b)` | `BehaviorContainerSendHandler`, `UnitListBoxFilterQuery` |
+| **Library function** | `libPrefix_lowercasename` | `libGalExe_unit`, `libGalExe_strip`, `libGalExe_debug` |
+| **Struct type** | `FeatureContainerStruct` (PascalCase + Struct suffix) | `ItemListContainerStruct`, `ListBoxFilterStruct`, `EffectContainerStruct` |
+| **Struct typedef (structref)** | `StructNameRef` | `typedef structref<ItemListContainerStruct> ItemListContainerStructRef` |
+| **Funcref typedef** | `CallbackNameRef` or `CallbackName` | `typedef funcref<ItemListSetActiveCallbackDef> ItemListSetActiveCallback` |
+| **Global module state** | PascalCase instance name | `BehaviorContainer`, `LightingContainer`, `EffectContainer` |
+| **File-local/private** | `static` keyword | `static string ItemList;`, `static ListBoxFilterStruct ListBoxFilter;` |
+| **Path string constant** | `UPPER_SNAKE_CASE` with `static const string` | `CONTAINERDLG_PATH`, `ADDBTN_PATH`, `EDITBOX_PATH` |
+| **Config/limit constant** | `UPPER_SNAKE_CASE` with `const int` | `ITEM_LIST_MAX`, `DEBUG_TYPE_INFO` |
+| **DataTable key prefix** | `c_FeatureName` or bare string | `c_ChatCommandkey = "DevTools.ChatCommand."` |
+| **Local variable** | short camelCase (no prefix) | `player`, `pg`, `val`, `i`, `entry`, `trigRan` |
+| **Struct field** | camelCase (no prefix) | `panel`, `messageBox`, `addButton`, `ownerPlayerPulldown` |
+
+#### Key structural rules from SC2-IngameDevTools:
+
+- Every module file has exactly one public `void ModuleName_Init()` function — the only entry point.
+- All internal helpers, state variables, and filter functions are `static`.
+- Trigger functions registered by string: `TriggerCreate("BehaviorContainerSendHandler")` — the string **must match the function name exactly**.
+- Trigger function signature: **always** `bool FunctionName(bool a, bool b)`.
+- Header files (`_h.galaxy`) contain only **forward declarations** — no implementations.
+- Debug/logging helpers use ultra-short global names: `print(string s)`, `console(string s)`, `err(string s)`.
+- Module-private console wrappers: `static void ModuleName_console(string s)` wrapping `TriggerDebugOutput`.
+
+#### Real examples from SC2-IngameDevTools:
+
+```galaxy
+// BehaviorHandler.galaxy — complete module pattern
+include "Script/debug_h"
+include "Script/ItemList"
+
+static const string CONTAINERDLG_PATH = "UIContainer/ConsoleUIContainer/CatalogManager/BehaviorManager";
+
+ItemListContainerStruct BehaviorContainer;   // global module state (PascalCase)
+static string ItemList;                       // file-private
+static ListBoxFilterStruct ListBoxFilter;     // file-private
+
+// Trigger handler — bool(bool,bool) signature, registered by string name
+bool BehaviorListBoxFilterQuery(bool a, bool b) {
+    int player = EventPlayer();               // locals are plain camelCase
+    playergroup pg = PlayerGroupSingle(player);
+    string val = DialogControlGetPropertyAsString(
+        ListBoxFilter.editbox, c_triggerControlPropertyEditText, player);
+    ItemList_FilterListRebuild(ItemList, ListBoxFilter, val, pg);
+    return true;
+}
+
+bool BehaviorContainerSendHandler(bool a, bool b) {
+    bool trigRan = true;
+    string val = DialogControlGetPropertyAsString(
+        BehaviorContainer.messageBox, c_triggerControlPropertyEditText, EventPlayer());
+    // ...
+    return trigRan;
+}
+
+void BehaviorHandler_Init() {                 // the ONE public entry point
+    playergroup pg = PlayerGroupAll();
+    ItemList = "BehaviorList";
+    ItemListContainer_InitStandard(BehaviorContainer, CONTAINERDLG_PATH,
+        "BehaviorContainerSendHandler");
+    ItemListInitFromCatalog(ItemList, c_gameCatalogBehavior, ItemListCatalogFilter);
+    ItemList_FilterListInitStandard(ListBoxFilter, "BehaviorListBox",
+        BehaviorListBoxSetActive, ItemListItemTextValue, CONTAINERDLG_PATH+"/NavList");
+    ItemList_FilterListRebuild(ItemList, ListBoxFilter, "", pg);
+}
+```
+
+```galaxy
+// Struct declaration — FeatureNameStruct pattern
+struct EffectContainerStruct {
+    int panel;
+    int messageBox;
+    int addButton;
+    int removeButton;
+    int sourceButton;
+    int targetButton;
+    int sourceUnitFrame;
+    int targetUnitFrame;
+    unit source;
+    unit target;
+};
+// Typedef for passing by reference:
+typedef structref<EffectContainerStruct> EffectContainerStructRef;
+```
+
+```galaxy
+// Funcref typedef pattern for callbacks
+void ItemListSetActiveCallbackDef(ItemListStructRef itemList, int index, playergroup pg);
+typedef funcref<ItemListSetActiveCallbackDef> ItemListSetActiveCallback;
+
+int ItemListForEachCallBack(string element, int currentIndex, ItemListStructRef itemList);
+typedef funcref<ItemListForEachCallBack> ItemListForEachCallBackRef;
+```
+
+```galaxy
+// Library utility functions: libPrefix_lowercaseName
+void libGalExe_debug(int player, string msg) { ... }
+string libGalExe_strip(string message) { ... }
+actor libGalExe_actor(int player, string param) { ... }
+```
+
+```galaxy
+// debug.galaxy — ultra-short global debug helpers
+void print(string s)   { TriggerDebugOutput(1, StringToText(s), true); }
+void console(string s) { TriggerDebugOutput(1, StringToText(s), false); }
+void err(string s)     { TriggerDebugOutput(1, StringToText(s), true); }
+
+// Module-private console wrapper:
+static void CatalogValueHandler_console(string s) {
+    TriggerDebugOutput(DEBUG_TYPE_INFO, StringToText(s), false);
+}
+```
+
+---
+
+### Standalone map / SC2Map (secondary — SSF pattern)
 
 | Kind | Convention | Example |
 |---|---|---|

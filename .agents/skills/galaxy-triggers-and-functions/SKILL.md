@@ -15,7 +15,8 @@ description: Trigger declaration, event registration, async execution via Trigge
 | Trigger Debugger guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/053_Trigger_Debugger/ |
 | Optimizing Code guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/056_Optimizing_Code/ |
 | Galaxy syntax definition | https://github.com/Talv/vscode-sc2-galaxy/blob/master/syntaxes/galaxy.json |
-| SSF codebase (canonical style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
+| **SC2-IngameDevTools (PRIMARY — #1 codebase)** | https://github.com/abrahamYG/SC2-IngameDevTools/tree/main/DevToolsIngame.SC2Mod/Script |
+| SSF codebase (secondary style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
 | Alcyone Frontlines codebase | https://github.com/KimPlaybit/Alcyone_Frontlines/tree/master/ProximaFrontlines.SC2Mod/scripts |
 | NativeLib | `TriggerLibs/NativeLib.galaxy` (sc2galaxy VS Code extension) |
 | SC2Mapster wiki | https://sc2mapster.wiki.gg/ |
@@ -64,6 +65,73 @@ typedef funcref<MyCallback_t> MyCallbackRef;
 ## Triggers
 
 A trigger is a named callback function registered to fire on certain game events.
+
+### ⭐ SC2-IngameDevTools trigger registration pattern (PRIMARY — use this)
+
+The SC2-IngameDevTools codebase uses a clean, consistent pattern for registering triggers by string name inside each module's `_Init()` function. This is the pattern to follow:
+
+```galaxy
+// Handler functions always have the bool(bool,bool) signature
+bool BehaviorContainerSendHandler(bool a, bool b) {
+    // ... handler logic
+    return true;
+}
+
+bool BehaviorListBoxFilterQuery(bool a, bool b) {
+    int player = EventPlayer();
+    playergroup pg = PlayerGroupSingle(player);
+    string val = DialogControlGetPropertyAsString(
+        ListBoxFilter.editbox, c_triggerControlPropertyEditText, player);
+    ItemList_FilterListRebuild(ItemList, ListBoxFilter, val, pg);
+    return true;
+}
+
+void BehaviorHandler_Init() {
+    trigger t;
+    // Register trigger by STRING name — the string must exactly match the function name
+    t = TriggerCreate("BehaviorContainerSendHandler");
+    TriggerAddEventDialogControl(t, c_playerAny, BehaviorContainer.addButton,
+        c_triggerControlEventTypeClick);
+    TriggerAddEventDialogControl(t, c_playerAny, BehaviorContainer.removeButton,
+        c_triggerControlEventTypeClick);
+
+    // Filter query trigger
+    t = TriggerCreate("BehaviorListBoxFilterQuery");
+    TriggerAddEventDialogControl(t, c_playerAny, ListBoxFilter.editbox,
+        c_triggerControlEventTypeTextChanged);
+}
+```
+
+Key rules from this pattern:
+- Trigger functions always have signature `bool FunctionName(bool a, bool b)`.
+- `TriggerCreate("FunctionName")` — the string is the **exact function name** as written in code.
+- Each module's `_Init()` creates all its own triggers and hooks its own events.
+- `trigger t;` is declared as a local and reused for multiple registrations in the same `_Init()`.
+- Chat message triggers use `TriggerAddEventChatMessage(t, c_playerAny, "commandString", false)`.
+- Generic event triggers use `TriggerAddEventGeneric(handler, "EventName")` + `TriggerSendEvent("EventName")`.
+
+```galaxy
+// Chat command registration (from DevTools/ChatCommand.galaxy)
+trigger DevTools_ChatCommand;
+
+void DevTools_ChatCommand_Init() {
+    DevTools_ChatCommand = TriggerCreate("DevTools_ChatCommand_Func");
+    // Commands registered later via DevTools_ChatCommandCreate():
+    //   TriggerAddEventChatMessage(DevTools_ChatCommand, c_playerAny, cmd, false);
+    //   TriggerAddEventGeneric(handler, "DevTools_ChatCommand.Exec."+cmd);
+}
+
+void DevTools_ChatCommandCreate(string cmd, trigger handler, text description) {
+    ItemListAdd(ItemList, cmd);
+    TriggerAddEventChatMessage(DevTools_ChatCommand, c_playerAny, cmd, false);
+    TriggerAddEventGeneric(handler, "DevTools_ChatCommand.Exec."+cmd);
+    DevTools_ChatCommandSetDescription(cmd, description);
+}
+
+void DevTools_ChatCommandSend(string cmd) {
+    TriggerSendEvent("DevTools_ChatCommand.Exec."+cmd);
+}
+```
 
 ### Declaring a trigger global
 

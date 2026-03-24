@@ -5,13 +5,14 @@ description: File structure, include order, and modular layout for Galaxy script
 
 # Galaxy Code Organization & File Splitting
 
-Galaxy scripts in a SC2 map can be split across many `.galaxy` files using `include`. This keeps code maintainable and modular. The SwarmSpecialForces map is the canonical reference for this pattern.
+Galaxy scripts in a SC2 map can be split across many `.galaxy` files using `include`. This keeps code maintainable and modular. **The SC2-IngameDevTools mod is the #1 primary reference for file structure and module layout.**
 
 ## Key References
 
 | Resource | URL |
 |---|---|
-| SSF scripts (canonical style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
+| **SC2-IngameDevTools Script/ folder (PRIMARY — #1 example)** | https://github.com/abrahamYG/SC2-IngameDevTools/tree/main/DevToolsIngame.SC2Mod/Script |
+| SSF scripts (secondary style reference) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
 | Alcyone Frontlines scripts | https://github.com/KimPlaybit/Alcyone_Frontlines/tree/master/ProximaFrontlines.SC2Mod/scripts |
 | Native function reference | https://mapster.talv.space/galaxy/reference |
 | GalaxyScript guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/058_GalaxyScript/ |
@@ -20,9 +21,161 @@ Galaxy scripts in a SC2 map can be split across many `.galaxy` files using `incl
 
 ---
 
+## SC2-IngameDevTools Handler-Module Layout (PRIMARY PATTERN)
+
+The SC2-IngameDevTools project organises each feature as a self-contained **handler file** in `Script/`. There is one main coordinator, a shared utilities folder, and a `_h.galaxy` header for forward declarations.
+
+### Folder & file structure
+```
+Script/
+├── DevToolsMain.galaxy          ← coordinator: includes all handlers, calls all _Init()
+├── debug.galaxy                 ← global debug helpers: print(), console(), err()
+├── debug_h.galaxy               ← forward declarations only (header pattern)
+├── split_string.galaxy          ← utility (string split)
+├── ItemList.galaxy              ← shared data structure (aggregator)
+├── ItemListListBoxFormat.galaxy ← formatting helpers for ItemList
+├── AbilityHandler.galaxy        ← feature handler (one per module)
+├── AbilityOrderHandler.galaxy
+├── ActorMessageHandler.galaxy
+├── BehaviorHandler.galaxy
+├── CameraHandler.galaxy
+├── CameraShakeHandler.galaxy
+├── CatalogLinkHandler.galaxy
+├── CatalogValueHandler.galaxy
+├── CheatHandler.galaxy
+├── DataEditorHandler.galaxy
+├── DataTableHandler.galaxy
+├── DoodadHandler.galaxy
+├── EffectHandler.galaxy
+├── FogHandler.galaxy
+├── LightingHandler.galaxy
+├── PlayerHandler.galaxy
+├── PortraitHandler.galaxy
+├── RaceHandler.galaxy
+├── SkinHandler.galaxy
+├── SoundtrackHandler.galaxy
+├── UnitHandler.galaxy
+├── UpgradeHandler.galaxy
+├── UserDataHandler.galaxy
+├── WeaponHandler.galaxy
+├── FreeCamHandler.galaxy
+├── ItemList/
+│   ├── index.galaxy             ← the actual ItemList implementation
+│   └── Listbox.galaxy           ← listbox sub-feature
+└── DevTools/
+    ├── helpers.galaxy           ← shared helper functions (spawn point, movement tracker)
+    ├── helpers_h.galaxy         ← forward declarations for helpers
+    ├── ChatCommand.galaxy       ← chat command subsystem
+    └── ChatCommand/
+        └── Commands.galaxy        ← registered chat commands
+```
+
+### Main coordinator (`DevToolsMain.galaxy`)
+```galaxy
+include "Script/debug"
+include "Script/DevTools/helpers"
+include "Script/ActorMessageHandler"
+include "Script/BehaviorHandler"
+include "Script/EffectHandler"
+include "Script/UnitHandler"
+include "Script/UpgradeHandler"
+include "Script/WeaponHandler"
+include "Script/AbilityHandler"
+include "Script/CatalogValueHandler"
+include "Script/CatalogLinkHandler"
+include "Script/LightingHandler"
+include "Script/DataTableHandler"
+include "Script/DataEditorHandler"
+include "Script/CameraHandler"
+include "Script/FogHandler"
+include "Script/DevTools/ChatCommand"
+include "Script/DevTools/ChatCommand/Commands"
+
+void DevToolsMain_Init() {
+    DevTools_ChatCommand_Init();
+    helpersInit();
+    ActorMessageHandler_Init();
+    CatalogValueHandler_Init();
+    UnitHandler_Init();
+    BehaviorHandler_Init();
+    EffectHandler_Init();
+    LightingHandler_Init();
+    // ... every handler's _Init() called here
+    DevTools_ChatCommand_Commands_Init();
+}
+```
+
+### Entry point wiring (`Lib7C0075CB.galaxy` — editor-generated lib file)
+```galaxy
+include "TriggerLibs/natives"
+include "Lib7C0075CB_h"
+include "TriggerLibs/NativeLib"
+include "Script/DevToolsMain"
+
+void TestMap_main() {
+    DevToolsMain_Init();
+}
+void lib7C0075CB_InitCustomScript() {
+    TestMap_main();
+}
+bool lib7C0075CB_InitLib_completed = false;
+void lib7C0075CB_InitLib() {
+    if (lib7C0075CB_InitLib_completed) { return; }
+    lib7C0075CB_InitLib_completed = true;
+    lib7C0075CB_InitCustomScript();
+}
+```
+
+### Header file pattern (`debug_h.galaxy`)
+```galaxy
+// ONLY forward declarations — no implementations
+void print(string s);
+void printT(text t);
+void console(string s);
+void err(string s);
+```
+
+### Single handler module anatomy (`BehaviorHandler.galaxy`)
+```galaxy
+// 1. Include shared utilities
+include "Script/debug_h"
+include "Script/ItemList"
+
+// 2. Path constants with UPPER_SNAKE_CASE
+static const string CONTAINERDLG_PATH =
+    "UIContainer/ConsoleUIContainer/CatalogManager/BehaviorManager";
+
+// 3. Module struct + global instance
+ItemListContainerStruct BehaviorContainer;
+
+// 4. File-private state
+static string ItemList;
+static ListBoxFilterStruct ListBoxFilter;
+
+// 5. Trigger event functions (bool a, bool b signature)
+bool BehaviorListBoxFilterQuery(bool a, bool b) { ... }
+bool BehaviorListBoxSelectionChanged(bool a, bool b) { ... }
+bool BehaviorContainerSendHandler(bool a, bool b) { ... }
+
+// 6. One public Init function
+void BehaviorHandler_Init() {
+    playergroup pg = PlayerGroupAll();
+    ItemList = "BehaviorList";
+    ItemListContainer_InitStandard(BehaviorContainer, CONTAINERDLG_PATH,
+        "BehaviorContainerSendHandler");         // trigger registered by STRING name
+    ItemListInitFromCatalog(ItemList, c_gameCatalogBehavior, ItemListCatalogFilter);
+    ItemList_FilterListInitStandard(ListBoxFilter, "BehaviorListBox",
+        BehaviorListBoxSetActive, ItemListItemTextValue,
+        CONTAINERDLG_PATH+"/NavList");
+    ItemList_FilterListRebuild(ItemList, ListBoxFilter, "", pg);
+}
+```
+
+---
+
 ## Real-World Include Orders
 
-### SSF full include order (`scripts/main.galaxy`)
+### SSF full include order (`scripts/main.galaxy`) — secondary reference
 ```galaxy
 include "scripts/Lib/Starcode"       // third-party lib first
 include "scripts/Enums"              // pure constants

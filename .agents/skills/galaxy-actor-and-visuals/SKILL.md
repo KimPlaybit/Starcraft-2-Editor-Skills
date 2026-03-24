@@ -11,7 +11,8 @@ description: Actors, visual effects, model attachments, animations, and tint/sca
 |---|---|
 | Native function reference | https://mapster.talv.space/galaxy/reference |
 | Galaxy syntax definition | https://github.com/Talv/vscode-sc2-galaxy/blob/master/syntaxes/galaxy.json |
-| SSF codebase (canonical style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
+| **SC2-IngameDevTools (PRIMARY — #1 codebase)** | https://github.com/abrahamYG/SC2-IngameDevTools/tree/main/DevToolsIngame.SC2Mod/Script |
+| SSF codebase (secondary style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
 | NativeLib actor helpers | `TriggerLibs/NativeLib.galaxy` — all `libNtve_gf_Attach*`, `libNtve_gf_Create*`, `libNtve_gf_PlayAnimation*`, `libNtve_gf_Set*`, `libNtve_gf_SendActorMessage*` functions |
 | SC2 editor guides | https://s2editor-guides.readthedocs.io |
 | SC2Mapster wiki | https://sc2mapster.wiki.gg/ |

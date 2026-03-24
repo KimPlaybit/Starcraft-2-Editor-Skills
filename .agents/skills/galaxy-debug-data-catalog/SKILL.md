@@ -15,7 +15,8 @@ description: Debug output, Data Table key-value storage, Catalog runtime field a
 | Optimizing Code guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/056_Optimizing_Code/ |
 | Data Tables guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/041_Data_Tables/ |
 | Custom Values guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/050_Custom_Values/ |
-| SSF codebase (canonical style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
+| **SC2-IngameDevTools (PRIMARY — #1 codebase)** | https://github.com/abrahamYG/SC2-IngameDevTools/tree/main/DevToolsIngame.SC2Mod/Script |
+| SSF codebase (secondary style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
 | NativeLib catalog helpers | `TriggerLibs/NativeLib.galaxy` — `libNtve_gf_CatalogFieldValueGetAsReal`, `libNtve_gf_CatalogReferenceGetAsReal`, `libNtve_gf_CatalogFieldValueSetAsReal`, `libNtve_gf_CatalogReferenceModifyBasedOnDefaultValue` |
 | SC2Mapster wiki | https://sc2mapster.wiki.gg/ |
 
@@ -52,29 +53,58 @@ c_triggerDebugOutputMessage   // general message
 
 The Data Table stores arbitrary values by `string` name, accessible from any trigger. It survives the scope of individual functions.
 
+### ⭐ SC2-IngameDevTools DataTable patterns (PRIMARY — use these)
+
+The SC2-IngameDevTools codebase uses the DataTable extensively as a backing store for its `ItemList` abstraction, chat command parameters, per-player state, and catalog lookups. Key patterns:
+
+```galaxy
+// Namespaced keys prevent collisions — use "Module.Feature.Key" format
+DataTableSetInt(true, "DataTableListPage."+IntToString(player), page);
+int page = DataTableGetInt(true, "DataTableListPage."+IntToString(player));
+
+// Store catalog type integer by catalog name string
+DataTableSetInt(true, "Catalog.Unit",    c_gameCatalogUnit);
+DataTableSetInt(true, "Catalog.Ability", c_gameCatalogAbil);
+// Retrieve: int catalog = DataTableGetInt(true, "Catalog."+catalogName);
+
+// Per-player listbox selection state (DataTable as a UI state cache)
+string key = listId+".Selected["+IntToString(player)+"]:"+IntToString(listItem);
+DataTableSetString(true, key, ItemListGetVal(itemList, index));
+if (DataTableValueExists(true, key)) {
+    string val = DataTableGetString(true, key);
+}
+DataTableValueRemove(true, key);
+
+// Trigger event param passing via DataTable (scoped to trigger execution context)
+string paramKey = TriggerEventParamName("DevTools_ChatCommand.Exec."+cmd, "_player");
+DataTableSetInt(false, paramKey, player);
+int p = DataTableGetInt(false, TriggerEventParamName(EventGenericName(), "_player"));
+
+// ItemList backing store (the full ItemList implementation in ItemList/index.galaxy)
+// ItemList is a string key; all data goes into the DataTable with structured keys:
+// "ItemList::[listId][index]"      → the value stored at that slot
+// "ItemList::[listId].Count"       → current item count
+// "ItemList[listId].Active.Player1" → current selection per player
+```
+
 ### Global (map-wide) data table
 
 ```galaxy
-// Save values
-DataTableSetInt("myKey", 42);
-DataTableSetFixed("position_x", 16.5);
-DataTableSetBool("isPhase2", true);
-DataTableSetUnit("heroUnit", lv_hero);
-DataTableSetString("lastEvent", "SpawnWave");
-DataTableSetPoint("spawnPt", lv_point);
-DataTableSetUnitGroup("activeGroup", lv_group);
-DataTableSetTimer("countdownTimer", lv_timer);
-DataTableSetRegion("baseRegion", lv_region);
-DataTableSetSound("ambience", lv_sound);
-DataTableSetDialog("scoreDialog", lv_dialog);
+// Save values — always pass true for the global (map-wide) scope
+DataTableSetInt(true, "myKey", 42);
+DataTableSetFixed(true, "position_x", 16.5);
+DataTableSetBool(true, "isPhase2", true);
+DataTableSetUnit(true, "heroUnit", lv_hero);
+DataTableSetString(true, "lastEvent", "SpawnWave");
+DataTableSetPoint(true, "spawnPt", lv_point);
 
 // Load values
-int    lv_n   = DataTableGetInt("myKey");
-fixed  lv_x   = DataTableGetFixed("position_x");
-bool   lv_b   = DataTableGetBool("isPhase2");
-unit   lv_u   = DataTableGetUnit("heroUnit");
-string lv_s   = DataTableGetString("lastEvent");
-point  lv_p   = DataTableGetPoint("spawnPt");
+int    lv_n   = DataTableGetInt(true, "myKey");
+fixed  lv_x   = DataTableGetFixed(true, "position_x");
+bool   lv_b   = DataTableGetBool(true, "isPhase2");
+unit   lv_u   = DataTableGetUnit(true, "heroUnit");
+string lv_s   = DataTableGetString(true, "lastEvent");
+point  lv_p   = DataTableGetPoint(true, "spawnPt");
 
 // Check existence
 bool lv_has = DataTableValueExists(c_dataTableScopeGlobal, "myKey");

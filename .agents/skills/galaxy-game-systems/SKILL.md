@@ -13,7 +13,8 @@ description: Bank save/load, spawner and wave systems, jungle/camp respawn, reso
 | Galaxy syntax definition | https://github.com/Talv/vscode-sc2-galaxy/blob/master/syntaxes/galaxy.json |
 | Banks guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/051_Banks/ |
 | Custom Values guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/050_Custom_Values/ |
-| SSF codebase (canonical style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
+| **SC2-IngameDevTools (PRIMARY — #1 codebase)** | https://github.com/abrahamYG/SC2-IngameDevTools/tree/main/DevToolsIngame.SC2Mod/Script |
+| SSF codebase (secondary style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
 | Alcyone Frontlines codebase | https://github.com/KimPlaybit/Alcyone_Frontlines/tree/master/ProximaFrontlines.SC2Mod/scripts |
 | NativeLib | `TriggerLibs/NativeLib.galaxy` (sc2galaxy VS Code extension) |
 | SC2Mapster wiki | https://sc2mapster.wiki.gg/ |

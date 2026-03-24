@@ -11,7 +11,8 @@ description: Dialog and dialog control creation, XML frame hookup, hero/upgrade 
 |---|---|
 | Native function reference | https://mapster.talv.space/galaxy/reference |
 | Galaxy syntax definition | https://github.com/Talv/vscode-sc2-galaxy/blob/master/syntaxes/galaxy.json |
-| SSF codebase (canonical style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
+| **SC2-IngameDevTools (PRIMARY — #1 codebase)** | https://github.com/abrahamYG/SC2-IngameDevTools/tree/main/DevToolsIngame.SC2Mod/Script |
+| SSF codebase (secondary style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
 | Alcyone Frontlines codebase | https://github.com/KimPlaybit/Alcyone_Frontlines/tree/master/ProximaFrontlines.SC2Mod/scripts |
 | NativeLib dialog helpers | `TriggerLibs/NativeLib.galaxy` — all `libNtve_gf_CreateDialogItem*`, `libNtve_gf_SetDialogItem*` functions |
 | Dialogs guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/043_Dialogs/ |
@@ -102,6 +103,63 @@ c_anchorBottomRight
 ---
 
 ## Dialog Controls
+
+### ⭐ SC2-IngameDevTools `DialogControlHookup` pattern (PRIMARY — use for existing XML frames)
+
+The SC2-IngameDevTools codebase hooks into **pre-existing XML UI frames** rather than creating dialog controls in code. This is the preferred pattern when UI frames are defined in `Base.SC2Data/UI/Layout/`:
+
+```galaxy
+// Hookup an existing XML panel by its frame path (no creation needed)
+// The path is relative to the UI layout root
+static const string CONTAINERDLG_PATH =
+    "UIContainer/ConsoleUIContainer/CatalogManager/BehaviorManager";
+static const string EDITBOX_PATH    = "Item";
+static const string ADDBTN_PATH     = "AddButton";
+static const string REMOVEBTN_PATH  = "RemoveButton";
+
+struct BehaviorContainerStruct {
+    int panel;       // the hooked panel (int = dialog control handle)
+    int messageBox;
+    int addButton;
+    int removeButton;
+};
+BehaviorContainerStruct BehaviorContainer;
+
+void BehaviorHandler_Init() {
+    trigger t;
+    // Hook the root panel by absolute path
+    BehaviorContainer.panel =
+        DialogControlHookupStandard(c_triggerControlTypePanel, CONTAINERDLG_PATH);
+
+    // Hook child controls relative to the panel
+    BehaviorContainer.messageBox =
+        DialogControlHookup(BehaviorContainer.panel, c_triggerControlTypeEditBox, EDITBOX_PATH);
+    BehaviorContainer.addButton =
+        DialogControlHookup(BehaviorContainer.panel, c_triggerControlTypeButton, ADDBTN_PATH);
+    BehaviorContainer.removeButton =
+        DialogControlHookup(BehaviorContainer.panel, c_triggerControlTypeButton, REMOVEBTN_PATH);
+
+    // Register click handler — trigger registered by STRING function name
+    t = TriggerCreate("BehaviorContainerSendHandler");
+    TriggerAddEventDialogControl(t, c_playerAny, BehaviorContainer.addButton,
+        c_triggerControlEventTypeClick);
+    TriggerAddEventDialogControl(t, c_playerAny, BehaviorContainer.removeButton,
+        c_triggerControlEventTypeClick);
+}
+```
+
+Key functions used:
+| Function | Purpose |
+|---|---|
+| `DialogControlHookupStandard(type, path)` | Hook a root-level frame by absolute XML path |
+| `DialogControlHookup(parent, type, childPath)` | Hook a child control relative to a parent panel |
+| `DialogControlGetPropertyAsString(ctrl, prop, player)` | Read text/string property |
+| `DialogControlSetPropertyAsString(ctrl, prop, pg, val)` | Set text/string property |
+| `DialogControlGetPropertyAsInt(ctrl, prop, player)` | Read int property (e.g. selection index) |
+| `DialogControlGetSelectedItem(list, player)` | Get selected listbox item index |
+| `DialogControlAddItem(list, pg, text)` | Add item to a listbox/pulldown |
+| `DialogControlRemoveAllItems(list, pg)` | Clear all listbox items |
+| `DialogControlGetItemCount(list, player)` | Count items in a listbox |
 
 ### Button
 

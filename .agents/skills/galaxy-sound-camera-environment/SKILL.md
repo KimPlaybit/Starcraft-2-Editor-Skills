@@ -11,7 +11,8 @@ description: Sound playback, music, camera movement and snapshots, cinematic mod
 |---|---|
 | Native function reference | https://mapster.talv.space/galaxy/reference |
 | Galaxy syntax definition | https://github.com/Talv/vscode-sc2-galaxy/blob/master/syntaxes/galaxy.json |
-| SSF codebase (canonical style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
+| **SC2-IngameDevTools (PRIMARY — #1 codebase)** | https://github.com/abrahamYG/SC2-IngameDevTools/tree/main/DevToolsIngame.SC2Mod/Script |
+| SSF codebase (secondary style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
 | NativeLib camera helpers | `TriggerLibs/NativeLib.galaxy` — `libNtve_gf_SwooshCamera`, `libNtve_gf_CopyOfCameraObject`, `libNtve_gf_CinematicMode` |
 | Camera Actions guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/046_Camera_Actions/ |
 | SC2Mapster wiki | https://sc2mapster.wiki.gg/ |
