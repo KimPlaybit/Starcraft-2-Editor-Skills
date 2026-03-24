@@ -169,6 +169,7 @@ The Trigger Editor GUI and raw Galaxy script both compile to the same thing — 
 - You need something the GUI **literally cannot do** — dynamic trigger creation (`TriggerCreate` / `TriggerAddEvent*` at runtime) must be written in Galaxy.
 - You're doing **catalog/data field access** — `CatalogFieldValueGet` and friends are easier in script than as chained GUI actions.
 - You have **frequently repeated conversions** or patterns that would require duplicating GUI nodes.
+- You are using **GitHub Copilot or any AI assistant** — Copilot cannot read or generate the GUI trigger binary format. It only works with plain text files. All AI-assisted code generation must be done in hand-written `.galaxy` script files under `scripts/`. Do **not** edit `MapScript.galaxy` directly — the SC2 editor regenerates and overwrites that file every time the map is saved, erasing any changes made to it.
 
 **Prefer the GUI trigger editor when:**
 - You're wiring up **events and conditions** — the GUI makes event types and their parameters discoverable and less error-prone.
