@@ -1,0 +1,7 @@
+{
+  "name": "sc2-editor",
+  "version": "1.0.0",
+  "description": "StarCraft 2 map development skills and agents for Galaxy scripting and the SC2 Data Editor.",
+  "skills": ["./.agents/skills/"],
+  "agents": ["./.github/agents/"]
+}
