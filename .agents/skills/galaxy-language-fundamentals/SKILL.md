@@ -12,6 +12,7 @@ Galaxy is the scripting language used in StarCraft II map/mod development. It is
 | Resource | URL |
 |---|---|
 | Native function reference | https://mapster.talv.space/galaxy/reference |
+| GalaxyScript guide (when/how to use script vs GUI) | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/058_GalaxyScript/ |
 | SC2Mapster Galaxy reference | https://sc2mapster.github.io/mkdocs/galaxy/ |
 | Galaxy syntax definition | https://github.com/Talv/vscode-sc2-galaxy/blob/master/syntaxes/galaxy.json |
 | GalaxyScript beginner guide | https://s2editor-guides.readthedocs.io/New_Tutorials/03_Trigger_Editor/058_GalaxyScript/ |
