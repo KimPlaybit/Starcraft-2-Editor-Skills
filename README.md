@@ -7,7 +7,7 @@ A collection of GitHub Copilot agents and skills for StarCraft 2 map development
 ### Copilot CLI / Claude Code
 
 ```
-/plugin install sc2-editor@<your-github-username>/Starcraft-2-editor-skillset
+/plugin install sc2-editor@KimPlaybit/Starcraft-2-editor-skillset
 ```
 
 Then confirm everything loaded:
