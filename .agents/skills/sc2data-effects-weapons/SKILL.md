@@ -17,8 +17,11 @@ Effects and weapons define **how game logic executes**: what damage is dealt, wh
 | Targets for Effects (wiki) | https://sc2mapster.wiki.gg/wiki/Targets_for_Effects |
 | Weapons (wiki) | https://sc2mapster.wiki.gg/wiki/Data/Weapons |
 | SC2Mapster mkdocs reference | https://sc2mapster.github.io/mkdocs/galaxy/ |
+| ShadowDragon Base.SC2Data (real GameData XML reference) | https://github.com/ShadowDragonSC2/Base.SC2Data/tree/main/GameData |
 
 ---
+
+> **File placement:** When creating effects for a new unit or ability, put them in the unit's own self-contained XML file (`GameData/Faction/UnitName/UnitName.xml`), not in a monolithic `EffectData.xml`. Register the file via `<Catalog path="..."/>` in `GameData.xml`. See the sc2data-units-abilities skill for the full file template.
 
 ## Effect Chain Architecture
 

@@ -18,8 +18,11 @@ Actors are the **visual and audio layer** of StarCraft II data. They respond to 
 | Actor Events (wiki) | https://sc2mapster.wiki.gg/wiki/Data/Actors/Events |
 | Actor Terms (wiki) | https://sc2mapster.wiki.gg/wiki/Data/Actors/Terms |
 | Blizzard Tutorials – Actors.md | https://github.com/SC2Mapster/blizzard-tutorials/blob/master/docs/New_Tutorials/04_Data_Editor/060_Actors.md |
+| ShadowDragon Base.SC2Data (real GameData XML reference) | https://github.com/ShadowDragonSC2/Base.SC2Data/tree/main/GameData |
 
 ---
+
+> **File placement:** When creating actors for a new unit, put them in the unit's own self-contained XML file (`GameData/Faction/UnitName/UnitName.xml`), not in a monolithic `ActorData.xml`. Register the file via `<Catalog path="..."/>` in `GameData.xml`. See the sc2data-units-abilities skill for the full file template.
 
 ## Actor File
 

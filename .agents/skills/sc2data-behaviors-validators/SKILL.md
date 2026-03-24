@@ -16,8 +16,11 @@ description: SC2 Data Editor — Behaviors (buffs, debuffs, auras, timers) and V
 | SC2Mapster wiki | https://sc2mapster.wiki.gg/ |
 | Behaviors (wiki) | https://sc2mapster.wiki.gg/wiki/Data/Behaviors |
 | Validators (wiki) | https://sc2mapster.wiki.gg/wiki/Data/Validators |
+| ShadowDragon Base.SC2Data (real GameData XML reference) | https://github.com/ShadowDragonSC2/Base.SC2Data/tree/main/GameData |
 
 ---
+
+> **File placement:** When creating behaviors for a new unit or ability, put them in the unit's own self-contained XML file (`GameData/Faction/UnitName/UnitName.xml`), not in a monolithic `BehaviorData.xml`. Register the file via `<Catalog path="..."/>` in `GameData.xml`. See the sc2data-units-abilities skill for the full file template.
 
 ## Behaviors (`BehaviorData.xml`)
 

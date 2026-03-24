@@ -19,6 +19,76 @@ The Data Editor stores all game data as XML inside `Base.SC2Data/GameData/`. Eve
 | Abilities (wiki) | https://sc2mapster.wiki.gg/wiki/Data/Abilities |
 | Units (wiki) | https://sc2mapster.wiki.gg/wiki/Data/Units |
 | Data Editor settings (wiki) | https://sc2mapster.wiki.gg/wiki/Data_Types |
+| ShadowDragon Base.SC2Data (real GameData XML reference) | https://github.com/ShadowDragonSC2/Base.SC2Data/tree/main/GameData |
+
+---
+
+## File Organization Pattern — One File Per Unit
+
+Rather than adding entries into monolithic type-specific files (`UnitData.xml`, `ActorData.xml`, etc.), the recommended approach is to create **one self-contained XML file per unit or feature**. All catalog types for that unit — unit, weapon, effects, abilities, behaviors, actors, models, sounds — live together in that one file.
+
+**Directory structure:**
+```
+Base.SC2Data/
+  GameData.xml                             ← lists all included files
+  GameData/
+    Terran/NCO/Herc/
+      Herc.xml                             ← all data for Herc in one file
+    Zerg/MyUnit/
+      MyUnit.xml                           ← all data for MyUnit in one file
+```
+
+**`GameData.xml`** at the mod root uses `<Includes>` to register each file:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Includes>
+    <Catalog path="GameData/Terran/NCO/Herc/Herc.xml"/>
+    <Catalog path="GameData/Zerg/MyUnit/MyUnit.xml"/>
+</Includes>
+```
+
+**Each unit file** uses a single `<Catalog>` root containing all data types for that unit in sequence:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Catalog>
+    <!-- Button -->
+    <CButton id="MyUnit" .../>  
+
+    <!-- Unit -->
+    <CUnit id="MyUnit" parent="Generic_Unit_Ground">...</CUnit>
+
+    <!-- Weapon + its effects -->
+    <CWeaponLegacy id="MyUnit_Weapon">...</CWeaponLegacy>
+    <CEffectDamage id="MyUnit_Weapon@Damage">...</CEffectDamage>
+
+    <!-- Ability + its effects + behaviors -->
+    <CAbilEffectTarget id="MyUnit_Ability">...</CAbilEffectTarget>
+    <CEffectSet id="MyUnit_Ability@Set">...</CEffectSet>
+    <CBehaviorBuff id="MyUnit_Ability@Buff">...</CBehaviorBuff>
+
+    <!-- Actor, Model, Sound -->
+    <CActorUnit id="MyUnit" unitName="MyUnit">...</CActorUnit>
+    <CModel id="MyUnit" parent="Unit">...</CModel>
+    <CSound id="MyUnit@Death" parent="Zerg_ExplosionSmall"/>
+
+    <!-- Requirement -->
+    <CRequirement id="MyUnit@Use"/>
+
+    <!-- Data collection — groups entries for the editor UI -->
+    <CDataCollectionUnit id="MyUnit">
+        <DataRecord Entry="Unit,MyUnit"/>
+        <DataRecord Entry="Actor,MyUnit"/>
+        <DataRecord Entry="Model,MyUnit"/>
+        <DataRecord Entry="Weapon,MyUnit_Weapon"/>
+    </CDataCollectionUnit>
+</Catalog>
+```
+
+**To add a new unit:**
+1. Create `GameData/YourFaction/UnitName/UnitName.xml` with a `<Catalog>` root.
+2. Add `<Catalog path="GameData/YourFaction/UnitName/UnitName.xml"/>` to `GameData.xml`.
+
+> See [ShadowDragon Base.SC2Data](https://github.com/ShadowDragonSC2/Base.SC2Data) — `GameData.xml` for the include list, and any unit subfolder (e.g. `GameData/Terran/Campaign/NCO/Herc/Herc.xml`) for a complete self-contained real-world example.
 
 ---
 

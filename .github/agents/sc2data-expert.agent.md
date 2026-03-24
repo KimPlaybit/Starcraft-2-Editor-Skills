@@ -48,6 +48,22 @@ Base.SC2Data/GameData/
   TargetSortData.xml  — CTargetSort* (target priority)
 ```
 
+## Per-Unit File Pattern (Recommended for New Content)
+
+Instead of adding new entries to the monolithic type-specific files above, the recommended pattern is to create **one self-contained XML file per unit or feature** and register it in `GameData.xml` via `<Includes>`.
+
+```xml
+<!-- GameData.xml at mod root -->
+<?xml version="1.0" encoding="utf-8"?>
+<Includes>
+    <Catalog path="GameData/Terran/MyUnit/MyUnit.xml"/>
+</Includes>
+```
+
+The unit file contains all catalog types (CUnit, CWeapon, CEffect*, CAbil*, CBehavior*, CActor*, CModel, CSound, CButton, CRequirement) under one `<Catalog>` root. See the sc2data-units-abilities skill for the full file template.
+
+> Real-world reference: [ShadowDragon Base.SC2Data](https://github.com/ShadowDragonSC2/Base.SC2Data/tree/main/GameData) — `GameData.xml` for the include list, each unit subfolder for a complete example.
+
 ## ⚠️ Critical Rules
 
 1. **Never modify base game entries without a parent chain** — always `parent="BaseEntry"` and override only what you need. Changing inherited values you don't mean to change can silently break units.
@@ -87,6 +103,7 @@ Load these for detailed XML patterns and field references:
 | Validators (wiki) | https://sc2mapster.wiki.gg/wiki/Data/Validators |
 | Weapons (wiki) | https://sc2mapster.wiki.gg/wiki/Data/Weapons |
 | Blizzard Tutorials GitHub | https://github.com/SC2Mapster/blizzard-tutorials/tree/master/docs/New_Tutorials/04_Data_Editor |
+| ShadowDragon Base.SC2Data (real GameData XML reference) | https://github.com/ShadowDragonSC2/Base.SC2Data/tree/main/GameData |
 
 ## When Answering
 

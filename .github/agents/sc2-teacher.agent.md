@@ -71,6 +71,7 @@ Read these for deep domain knowledge when needed:
 | SSF codebase (canonical Galaxy style) | https://github.com/Cristall/SC2-SwarmSpecialForces/tree/main/SwarmSpecialForces.SC2Map/scripts |
 | Alcyone Frontlines codebase | https://github.com/KimPlaybit/Alcyone_Frontlines/tree/master/ProximaFrontlines.SC2Mod/scripts |
 | SC2 Abilities reference (Liquipedia) | https://liquipedia.net/starcraft2/Abilities |
+| ShadowDragon Base.SC2Data (real GameData XML reference) | https://github.com/ShadowDragonSC2/Base.SC2Data/tree/main/GameData |
 
 ---
 
@@ -183,6 +184,54 @@ CUpgrade
    - **Value**: the delta to apply (absolute set, add, multiply)
 
 > **Key insight:** Upgrades reach **into** existing entries and change specific fields. You are not replacing the weapon or ability — you are patching one field in it. This is why you can have a single weapon that gets stronger with each upgrade level without duplicating any data.
+
+---
+
+### Melee Init Disables XP Gain — Hero Leveling May Require Full Custom Init
+
+The standard melee initialization (`MeleeInitialization` trigger / `MeleeInitializationHandle()`) is designed for ladder StarCraft II — no heroes, no leveling. One of the things it does silently during setup is:
+
+```galaxy
+GameSetXPEnabled(false);
+```
+
+This is a **global switch** that shuts off all experience gain for every player. Units can have full XP/level-up data in the Data Editor but will **never accumulate any XP** — the engine ignores it with no warning, no error, and no log output. Heroes simply never level up, making it look like a data problem when it's actually a one-line global flag.
+
+The standard melee init is made up of these four calls:
+
+```galaxy
+MeleeInitResources();  // starting minerals/gas
+MeleeInitUnits();      // spawn starting workers/units at start locations
+MeleeInitAI();         // kick off AI for computer players
+MeleeInitOptions();    // apply game options (speed, etc.)
+```
+
+The `GameSetXPEnabled(false)` call is believed to come from `MeleeInitAI()` or `MeleeInitUnits()` — either way, it happens during this block and there is no log or warning to tell you it happened.
+
+**Option A — Try flipping the flag back (may not always work):**
+
+Add this in your map initialization trigger, **after** the melee init calls:
+
+```galaxy
+GameSetXPEnabled(true);
+```
+
+In the Trigger Editor: **Game → Turn Experience Gain On/Off → On**
+
+> Order matters. The melee init calls set it to `false`, your line flips it back. If you call it before they run, they will undo it.
+
+**Option B — Skip melee init entirely and do a full custom initialization (the reliable approach):**
+
+If flipping the flag doesn't work, or if you need full control over your map's startup, skip all four melee init calls and replicate what they do yourself:
+
+- **`MeleeInitResources()`** — set starting minerals/gas per player
+- **`MeleeInitUnits()`** — spawn starting units (workers, overlords, etc.) at each player's start location
+- **`MeleeInitAI()`** — call the appropriate AI initialization for each computer-controlled slot
+- **`MeleeInitOptions()`** — apply any lobby options your map uses
+
+This is more work upfront, but gives you complete control over initialization order and guarantees XP (and anything else melee init clobbers) works the way you expect.
+
+> **Key insight:** Melee init is a convenience wrapper for standard ladder play. For custom maps with heroes, leveling, or non-standard rules, a full custom init is often the right long-term choice anyway — you're not fighting against what melee init assumes about your game.
 
 ---
 

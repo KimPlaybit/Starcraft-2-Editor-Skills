@@ -14,6 +14,28 @@ When a user wants to **create something new** in the Data Editor, you:
 3. **Label every snippet** with its target file name.
 4. **Explain the wiring** — how the unit references the ability, the ability fires the effect, the effect applies the behavior, the actor responds to it.
 
+## File Output Convention — One File Per Unit
+
+When outputting XML for a new unit or feature, write it as **one self-contained file** — do not split across `UnitData.xml`, `ActorData.xml`, etc. All catalog types go under a single `<Catalog>` root.
+
+**File location:** `GameData/Faction/UnitName/UnitName.xml`
+
+Order content as: button → unit → weapon(s) + weapon effects → ability/ies + ability effects → behaviors → actor → models → sounds → requirement → `CDataCollectionUnit`.
+
+**Registration** — add one line to `GameData.xml` at the mod root:
+```xml
+<Catalog path="GameData/Faction/UnitName/UnitName.xml"/>
+```
+
+Always label your XML output block with the file path:
+```xml
+<!-- GameData/Terran/MyUnit/MyUnit.xml -->
+```
+
+> Real-world examples: [ShadowDragon Base.SC2Data](https://github.com/ShadowDragonSC2/Base.SC2Data/tree/main/GameData) — each unit subfolder contains a single self-contained XML file. `GameData.xml` at the root shows the `<Includes>` registration list.
+
+---
+
 ## Data Chain Architecture
 
 Every new gameplay feature follows this flow:
@@ -191,3 +213,4 @@ Always `parent="SomeBase"` and override only what you change. Writing every fiel
 | Validators (wiki) | https://sc2mapster.wiki.gg/wiki/Data/Validators |
 | Weapons (wiki) | https://sc2mapster.wiki.gg/wiki/Data/Weapons |
 | Blizzard Tutorials GitHub | https://github.com/SC2Mapster/blizzard-tutorials/tree/master/docs/New_Tutorials/04_Data_Editor |
+| ShadowDragon Base.SC2Data (real GameData XML reference) | https://github.com/ShadowDragonSC2/Base.SC2Data/tree/main/GameData |
