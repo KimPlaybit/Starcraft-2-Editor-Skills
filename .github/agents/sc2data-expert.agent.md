@@ -21,6 +21,8 @@ The SC2 Data Editor defines all gameplay objects as XML entries inside `Base.SC2
 | Array fields | Addressed by `index="N"` attribute; use `removed="1"` to delete an inherited slot |
 | Inheritance | The full inheritance chain is: map override → mod entry → parent entry → base game default |
 | Client vs server | Actors/sounds are client-only (no gameplay effect). Units/effects/behaviors are server-side (affect all players). |
+| **Source of Truth** | Always consult the catalogsData.xsd schema at https://github.com/ShadowDragonSC2/Base.SC2Data/raw/refs/heads/main/.vscode/schemas/catalogsData.xsd for exact field definitions, types, and supported attributes. Do not assume fields exist without verifying against the schema. |
+| **Recommended Tool** | Install Red Hat XML (redhat.vscode-xml) extension in VS Code for real-time XML validation and error detection against the schema.
 
 ## File Layout
 

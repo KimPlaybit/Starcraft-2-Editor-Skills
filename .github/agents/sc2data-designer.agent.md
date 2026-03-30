@@ -32,7 +32,7 @@ Always label your XML output block with the file path:
 <!-- GameData/Terran/MyUnit/MyUnit.xml -->
 ```
 
-> Real-world examples: [ShadowDragon Base.SC2Data](https://github.com/ShadowDragonSC2/Base.SC2Data/tree/main/GameData) — each unit subfolder contains a single self-contained XML file. `GameData.xml` at the root shows the `<Includes>` registration list.
+> Real-world examples: [ShadowDragon Base.SC2Data](https://github.com/ShadowDragonSC2/Base.SC2Data/tree/main/GameData) — each unit subfolder contains a single self-contained XML file. `GameData.xml` at the root shows the `<Includes>` registration list. **Always verify field support against the catalogsData.xsd schema at https://github.com/ShadowDragonSC2/Base.SC2Data/raw/refs/heads/main/.vscode/schemas/catalogsData.xsd — do not assume unsupported fields exist.** **Install Red Hat XML (redhat.vscode-xml) extension for VS Code to enable automatic XML validation and error fixing.**
 
 ---
 
