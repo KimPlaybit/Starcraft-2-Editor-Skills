@@ -1,6 +1,6 @@
 ---
 name: sc2-units-reference
-description: StarCraft II unit catalog reference — editor IDs, races, attributes, and roles for all multiplayer units and structures across Wings of Liberty, Heart of the Swarm, and Legacy of the Void. Use when you need to know the correct catalog/Galaxy type ID for a unit (e.g. "SiegeTank", "HighTemplar", "BroodLord"), or when checking a unit's race, classification, or expansion of origin. Referenced by sc2data-units-abilities, galaxy-units-and-groups, sc2data-actors-visuals, and sc2data-effects-weapons.
+description: StarCraft II unit catalog reference — editor IDs, races, attributes, and roles for all multiplayer units and structures across Wings of Liberty, Heart of the Swarm, and Legacy of the Void. Also covers campaign-only units and all 18 co-op commanders with their race, hero unit IDs, and signature units. Use when you need to know the correct catalog/Galaxy type ID for a unit (e.g. "SiegeTank", "HighTemplar", "BroodLord"), or when checking a unit's race, classification, expansion of origin, or which commander a unit belongs to. Referenced by sc2data-units-abilities, galaxy-units-and-groups, sc2data-actors-visuals, and sc2data-effects-weapons.
 ---
 
 # SC2 Units Reference
@@ -258,6 +258,48 @@ These units exist in the editor's data (available as parents or `UnitCreate` tar
 | Blood Hunter | `BloodHunter` | Co-op | Alarak co-op; heavily armored melee |
 | Shadow Guard | `ShadowGuard` | Co-op | Nova co-op; Protoss-tech Ghost variant |
 | Void Templar | `VoidTemplar` | LotV | Tal'darim zealot evolution with life-drain |
+
+---
+
+## Co-op Commanders
+
+All 18 Co-op Missions commanders, grouped by race. Hero unit IDs are best-effort — verify in the relevant co-op mod's GameData XML if needed. Most co-op data lives under `Mods/CoopCampaign.SC2Mod`.
+
+> **Tip:** Co-op unit IDs tagged "Co-op" in the Campaign tables above belong to the commanders listed here, matched by the Commander column.
+
+### Terran Commanders
+
+| Commander | Hero Unit ID | Style / Signature | Notable Unique Units |
+|---|---|---|---|
+| **Jim Raynor** | `RaynorJim` | Durable all-rounder; Hyperion battlecruiser calldown; Bunker-heavy macro | Vultures, Goliaths, Science Vessels, Medics, upgraded MMM |
+| **Rory Swann** | `SwannRory` | Mechanical focus; free mech repair; Hercules calldown | Goliaths, Wraiths, Diamondbacks, Science Vessels; Thor upgrades |
+| **Nova Terra** | `NovaTerra` | Covert strike force; all units permanently cloaked; Nuke/Airstrike calldowns | Spectres, Siege Breakers, Ravens, Raven Type-II |
+| **Mira Han & Matt Horner** | `HanMira` / `HornerMatt` | Dual-hero; Han fields mercenary ground troops; Horner builds a capital ship fleet | Assault Galleons, Dusk Wings, War Pigs, Spartan Company and other mercenary squads |
+| **Tychus Findlay** | `TychusFindlay` | Squad of unique outlaw heroes (up to 5); each hero has distinct abilities | Sirius (Goliath), Nux (Thor), Vega (Medivac), Crooked Sam (Viking), Cannonball (Siege Tank) |
+| **Arcturus Mengsk** | `MengskArcturus` | Imperial Guard; calls in Royal Guard elite units; Dominion Trooper fodder army | Royal Guard units, Dominion troopers/assault troopers as disposable front line |
+
+### Zerg Commanders
+
+| Commander | Hero Unit ID | Style / Signature | Notable Unique Units |
+|---|---|---|---|
+| **Sarah Kerrigan** | `KerriganSarahZerg` | Hero-centric; powerful melee hero; can morph to primal form; Leviathan calldown | Standard Zerg army enhanced by hero ability chain |
+| **Zagara** | `ZagaraZerg` | Swarm mass production; Hunter Killers, banelings, and Scourge; Feral Frenzy | Hunter Killers, Aberrations, Scourge, Baneling Hunter drops |
+| **Abathur** | `AbathurZerg` | Evolution/mutation focus; Toxic Nest; Symbiote buff on allied units | Brutalisks, Symbiote-buffed allies, Swarm Host Locusts |
+| **Dehaka** | `DehakaZerg` | Primal Zerg; Essence collection grants permanent upgrades; large solo hero + primal pack | Primal Zerglings, Primal Roaches, Primal Hydralisks, Primal Guardians, Tyrannozors |
+| **Alexei Stukov** | `StukovAlexei` | Infested Terran theme; infests enemy structures; infested building construction | Infested Marines, Infested Siege Tanks, Infested SCVs, Infested Bunkers, Infested Liberators |
+| **Egon Stetmann** | `StetmannEgon` | Mecha Zerg (robotic skins); Gary (mecha Ultralisk hero); Stetellite power grid for bonuses | Mecha Zergling, Mecha Hydralisk, Mecha Roach, Mecha Lurker, Mecha Corruptor, Mecha Overlord |
+
+### Protoss Commanders
+
+| Commander | Hero Unit ID | Style / Signature | Notable Unique Units |
+|---|---|---|---|
+| **Artanis** | `ArtanisProtoss` | Guardian Shell passive (survives one-hit kills); Spear of Adun solar lance; classic Protoss | Dragoons, Scouts, Corsairs, Reavers via Spear of Adun orbital strikes |
+| **Vorazun** | `VorazunProtoss` | Dark Templar / shadow ops; Time Stop ultimate; all units permanently cloaked | Dark Templar, Dark Archon, Corsairs, Shadow Guard |
+| **Karax** | `KaraxProtoss` | Mechanical army + Spear of Adun support; Repair Beam; Photon Overcharge | Arbiters, Carriers, Spear of Adun calldowns; Conservators, Interdictor |
+| **Alarak** | `AlarakProtoss` | Tal'darim elite; Death Fleet calldown; hero grows stronger from allied deaths | Ascendants, Slayers, Supplicants, Havoc, Avengers, Blood Hunters |
+| **Fenix** | `FenixProtoss` | Champion suit with 6 swappable loadouts (each a different unit type); classic Protoss army | Dragoons, Scouts, Carriers, Reavers, Immortals, Adepts — depending on active suit; Mirage |
+| **Zeratul** | `ZeratulProtoss` | Artifact / void shard powers; passive army-wide buffs from collected fragments | Standard Protoss army empowered by artifact powers; Void Templar units |
+| **Zagara** (Zerg) | *(see Zerg above)* | — | — |
 
 ---
 
