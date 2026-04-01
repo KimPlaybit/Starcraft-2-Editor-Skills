@@ -22,6 +22,7 @@ The Data Editor stores all game data as XML inside `Base.SC2Data/GameData/`. Eve
 | ShadowDragon Base.SC2Data (real GameData XML reference) | https://github.com/ShadowDragonSC2/Base.SC2Data/tree/main/GameData |
 | **Source of Truth: CatalogsData XSD Schema** | https://github.com/ShadowDragonSC2/Base.SC2Data/raw/refs/heads/main/.vscode/schemas/catalogsData.xsd — Always consult this for exact fields, attributes, and structure of units, abilities, movers, turrets, requirements, and races. Do not assume fields exist; verify against the schema. |
 | **Recommended VS Code Extension** | Red Hat XML (redhat.vscode-xml) — Install this extension for XML validation, auto-completion, and error detection using the catalogsData.xsd schema. Configure it in .vscode/settings.json for automatic validation.
+| **SC2 Unit Catalog IDs** | See skill `sc2-units-reference` for a full list of all multiplayer unit/structure catalog IDs (editor IDs), races, attributes, and expansion of origin — use when looking up the correct `id` string to reference for a parent or existing unit.
 
 ## XML Schema Error Check and Fix Workflow
 
