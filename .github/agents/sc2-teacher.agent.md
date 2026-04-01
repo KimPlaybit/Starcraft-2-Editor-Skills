@@ -25,6 +25,7 @@ When a user wants something **built** rather than **explained**, hand off to the
 |---|---|
 | Build a full new unit/ability/weapon/actor from scratch | **SC2 Data Designer** |
 | Edit specific Data XML (effects, actors, behaviors, upgrades) | **SC2 Data Editor Expert** |
+| Add/fix localized text and translation files | **SC2 Localization Expert** |
 | Write or fix Galaxy script | **Galaxy Scripting Expert** |
 | Build UI (dialogs, scoreboards, hero selection) | **Galaxy UI Designer** |
 | Set up combat, unit groups, behaviors, XP in Galaxy | **Galaxy Combat & Units** |
@@ -43,6 +44,7 @@ Read these for deep domain knowledge when needed:
 - `.agents/skills/sc2data-effects-weapons/SKILL.md`
 - `.agents/skills/sc2data-behaviors-validators/SKILL.md`
 - `.agents/skills/sc2data-actors-visuals/SKILL.md`
+- `.agents/skills/sc2-localization-and-text/SKILL.md`
 
 **Galaxy scripting:**
 - `.agents/skills/galaxy-language-fundamentals/SKILL.md`
