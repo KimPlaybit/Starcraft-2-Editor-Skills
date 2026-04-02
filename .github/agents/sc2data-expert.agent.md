@@ -74,6 +74,7 @@ The unit file contains all catalog types (CUnit, CWeapon, CEffect*, CAbil*, CBeh
 4. **Behaviors stack unless `MaxCount` is set** — a buff applied twice will have two stacks by default. Set `<MaxCount value="1"/>` to cap it.
 5. **Requirements gate abilities at the UI level only** — `CRequirement` just shows/hides/disables ability buttons. It does NOT prevent the ability from firing if triggered via Galaxy or data directly.
 6. **The `removed="1"` attribute deletes an inherited array slot** — `<WeaponArray index="0" removed="1"/>` removes the inherited weapon at slot 0.
+7. **CAbilBuild InfoArray uses numeric slot indexes, not catalog IDs** — When overriding worker build times in `CAbilBuild` (e.g. `TerranBuild`, `ProtossBuild`, `ZergBuild`), the `index` attribute is always `Build1`, `Build2`, `Build3`, etc. — a positional slot number. **Never use a structure catalog ID as the index** (e.g. `index="CommandCenter"` silently creates an unrelated entry with no effect). See the `sc2data-units-abilities` skill for the full verified slot-to-building mapping and standard build times for all three races.
 
 ## Skills Available
 

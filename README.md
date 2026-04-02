@@ -41,11 +41,14 @@ Open VS Code with GitHub Copilot Chat enabled — no further configuration requi
 | `galaxy-ai-scripting` | AI behavior, waves, and tech tree in Galaxy |
 | `galaxy-code-splitter` | Split monolithic scripts into modular files |
 | `galaxy-combat-and-units` | Units, combat, behaviors, XP/leveling |
+| `galaxy-naming-convention` | Audit and enforce Galaxy naming conventions |
 | `galaxy-spawner-wave` | Spawner, wave, and camp systems |
 | `galaxy-ui-designer` | Dialogs, HUD, scoreboards, hero selection |
+| `sc2-localization-expert` | Localization files, missing translations, text audits |
 | `sc2-teacher` | Explains how things work; troubleshoots editor problems |
 | `sc2data-designer` | Design full data chains (heroes, abilities, effects, actors) |
 | `sc2data-expert` | General SC2 Data Editor (XML) expert |
+| `sc2data-wizard-expert` | Create and use Data Editor wizards (.BlizWiz) |
 
 ### Skills (`.agents/skills/`)
 
@@ -64,7 +67,10 @@ Open VS Code with GitHub Copilot Chat enabled — no further configuration requi
 | `galaxy-points-regions-geometry` | Points, regions, pathfinding, coordinates |
 | `galaxy-math-strings-conversion` | Math, type conversions, string formatting |
 | `galaxy-debug-data-catalog` | Debug output, Data Table, Catalog access |
+| `sc2-localization-and-text` | GameStrings, GameHotkeys, ObjectStrings, TriggerStrings |
+| `sc2-units-reference` | Unit catalog reference — IDs, races, attributes, co-op commanders |
 | `sc2data-units-abilities` | Units, abilities, movers, turrets (XML) |
 | `sc2data-effects-weapons` | Effects, weapons, upgrades, damage chain (XML) |
 | `sc2data-behaviors-validators` | Behaviors, buffs, validators (XML) |
 | `sc2data-actors-visuals` | Actors, animations, sounds, actor events (XML) |
+| `sc2data-wizards` | Data Editor wizards (.BlizWiz) for automating data creation (XML) |

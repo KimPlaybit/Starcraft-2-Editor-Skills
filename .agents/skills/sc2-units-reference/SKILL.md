@@ -11,6 +11,8 @@ This file lists all StarCraft II multiplayer units and structures with their **e
 
 > **Expansion key:** WoL = Wings of Liberty, HotS = Heart of the Swarm, LotV = Legacy of the Void
 
+> **Build slot mapping:** When modifying worker build times via `CAbilBuild` (`TerranBuild`, `ProtossBuild`, `ZergBuild`), the InfoArray slots are numeric (`Build1`, `Build2`, ...) — NOT the structure catalog IDs. See `sc2data-units-abilities` skill for the full verified slot-to-building mapping and standard build times for all three races.
+
 ---
 
 ## Terran
@@ -110,7 +112,7 @@ This file lists all StarCraft II multiplayer units and structures with their **e
 | Forge | `Forge` | WoL | Upgrades ground weapons/armor/shields |
 | Cybernetics Core | `CyberneticsCore` | WoL | Unlocks Stalker, Sentry; air upgrades |
 | Twilight Council | `TwilightCouncil` | WoL | Enables Charge, Blink, Resonating Glaives |
-| Templar Archives | `TemplarArchives` | WoL | Required for High Templar |
+| Templar Archives | `TemplarArchive` | WoL | Required for High Templar |
 | Dark Shrine | `DarkShrine` | WoL | Required for Dark Templar |
 | Photon Cannon | `PhotonCannon` | WoL | Detector, attacks air and ground |
 | Robotics Facility | `RoboticsFacility` | WoL | Produces Immortal, Colossus, Observer, WP |

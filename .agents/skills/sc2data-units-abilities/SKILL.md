@@ -269,6 +269,89 @@ Ability types map directly to XML element names:
 </CAbilResearch>
 ```
 
+### Build ability (CAbilBuild) — worker construction
+
+`CAbilBuild` controls which structures a worker unit can construct and how long each takes. Each buildable structure occupies a **sequential numeric slot** in the InfoArray:
+
+> **Critical pitfall:** The `index` attribute is always `Build1`, `Build2`, `Build3`, etc. — a positional slot number. It is **NOT the structure's catalog ID**. Using `index="CommandCenter"` or `index="Nexus"` silently creates a new entry that never overrides the correct slot and has no in-game effect. Always use the numeric `BuildN` format confirmed from the Data Editor's InfoArray panel.
+
+```xml
+<!-- Override Terran build times — only specify slots you change -->
+<CAbilBuild id="TerranBuild">
+    <InfoArray index="Build1"  Time="71"/>   <!-- CommandCenter -->
+    <InfoArray index="Build4"  Time="46"/>   <!-- Barracks -->
+    <InfoArray index="Build11" Time="43"/>   <!-- Factory -->
+</CAbilBuild>
+```
+
+#### Void.SC2Mod Standard Build Slot Mapping
+
+The three worker build abilities (`TerranBuild`, `ProtossBuild`, `ZergBuild`) are defined in `Mods/Void.SC2Mod`. The tables below list every active slot, the building it corresponds to, and the standard build time in seconds as confirmed from the Data Editor. Slots labelled *(None)* exist in the editor's array but have no building assigned — they can be omitted from any XML override.
+
+**TerranBuild** — SCV (`id="TerranBuild"`):
+
+| Index | Building | Editor ID | Standard Time (s) |
+|---|---|---|---|
+| `Build1` | Command Center | `CommandCenter` | 71 |
+| `Build2` | Supply Depot | `SupplyDepot` | 21 |
+| `Build3` | Refinery | `Refinery` | 21 |
+| `Build4` | Barracks | `Barracks` | 46 |
+| `Build5` | Engineering Bay | `EngineeringBay` | 25 |
+| `Build6` | Missile Turret | `MissileTurret` | 18 |
+| `Build7` | Bunker | `Bunker` | 29 |
+| `Build8` | Refinery (Rich) | `RefineryRich` | 21 |
+| `Build9` | Sensor Tower | `SensorTower` | 18 |
+| `Build10` | Ghost Academy | `GhostAcademy` | 29 |
+| `Build11` | Factory | `Factory` | 43 |
+| `Build12` | Starport | `Starport` | 36 |
+| `Build13` | *(None)* | — | — |
+| `Build14` | Armory | `Armory` | 46 |
+| `Build15` | *(None)* | — | — |
+| `Build16` | Fusion Core | `FusionCore` | 46 |
+
+**ProtossBuild** — Probe (`id="ProtossBuild"`):
+
+| Index | Building | Editor ID | Standard Time (s) |
+|---|---|---|---|
+| `Build1` | Nexus | `Nexus` | 71 |
+| `Build2` | Pylon | `Pylon` | 21 |
+| `Build3` | Assimilator | `Assimilator` | 21 |
+| `Build4` | Gateway | `Gateway` | 46 |
+| `Build5` | Forge | `Forge` | 25 |
+| `Build6` | Fleet Beacon | `FleetBeacon` | 43 |
+| `Build7` | Twilight Council | `TwilightCouncil` | 36 |
+| `Build8` | Photon Cannon | `PhotonCannon` | 29 |
+| `Build9` | *(None)* | — | — |
+| `Build10` | Stargate | `Stargate` | 43 |
+| `Build11` | Templar Archives | `TemplarArchive` | 36 |
+| `Build12` | Dark Shrine | `DarkShrine` | 100 |
+| `Build13` | Robotics Bay | `RoboticsBay` | 46 |
+| `Build14` | Robotics Facility | `RoboticsFacility` | 46 |
+| `Build15` | Cybernetics Core | `CyberneticsCore` | 36 |
+
+**ZergBuild** — Drone (`id="ZergBuild"`):
+
+| Index | Building | Editor ID | Standard Time (s) |
+|---|---|---|---|
+| `Build1` | Hatchery | `Hatchery` | 71 |
+| `Build2` | Creep Tumor | `CreepTumor` | 15 |
+| `Build3` | Extractor | `Extractor` | 21 |
+| `Build4` | Spawning Pool | `SpawningPool` | 46 |
+| `Build5` | Evolution Chamber | `EvolutionChamber` | 25 |
+| `Build6` | Hydralisk Den | `HydraliskDen` | 33 |
+| `Build7` | Spire | `Spire` | 71 |
+| `Build8` | Ultralisk Cavern | `UltraliskCavern` | 46 |
+| `Build9` | Infestation Pit | `InfestationPit` | 36 |
+| `Build10` | Nydus Network | `NydusNetwork` | 36 |
+| `Build11` | Baneling Nest | `BanelingNest` | 43 |
+| `Build12` | *(None)* | — | — |
+| `Build13` | *(None)* | — | — |
+| `Build14` | Roach Warren | `RoachWarren` | 39 |
+| `Build15` | Spine Crawler | `SpineCrawler` | 36 |
+| `Build16` | Spore Crawler | `SporeCrawler` | 21 |
+
+> **Morphs use CAbilMorph, not CAbilBuild:** Zerg tier upgrades (Lair, Hive, Greater Spire) and Terran CC upgrades (Orbital Command, Planetary Fortress) are `CAbilMorph` entries, not `CAbilBuild`. They have separate ability IDs and a different InfoArray key format.
+
 ### Cost fields
 
 | Field | Purpose |
