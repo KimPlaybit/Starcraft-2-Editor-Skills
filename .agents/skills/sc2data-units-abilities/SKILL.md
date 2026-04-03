@@ -196,6 +196,37 @@ Types: `CUnit`, `CUnitHero`
 | `PlacementRadius` | Footprint radius for placement |
 | `EditorCategories` | Organizational tags (Race, AbilityorEffectType, etc.) |
 
+### Zerg morph/burrowed unit cost pitfall
+
+When a Zerg unit can **uproot, burrow, or morph**, SC2 uses a *separate* `CUnit` catalog entry for the transformed form. If that alternate form's `CostResource` (inherited from the base mod) is higher than the primary form's overridden cost, **SC2 charges the mineral/vespene difference when the unit transitions between states**.
+
+**Rule:** whenever you override a Zerg unit's cost in `UnitData.xml`, you must also override the cost of ALL its morph-target variants to match.
+
+**Confirmed variant IDs:**
+
+| Primary CUnit | Variant CUnit | Transition |
+|---|---|---|
+| `SpineCrawler` | `SpineCrawlerUprooted` | Uproot/replant |
+| `SporeCrawler` | `SporeCrawlerUprooted` | Uproot/replant |
+| `SwarmHost` | `SwarmHostBurrowed` | Burrow to attack |
+| `Lurker` | `LurkerBurrowed` | Burrow to attack |
+
+**Units with suspected variants — confirm catalog ID with user before writing override:**
+
+| Primary CUnit | Suspected variant | Confirm? |
+|---|---|---|
+| `Zergling` | `ZerglingBurrowed` | Yes |
+| `Drone` | `DroneBurrowed` | Yes |
+| `Queen` | `QueenBurrowed` | Yes |
+| `Roach` | `RoachBurrowed` | Yes |
+| `Baneling` | `BanelingBurrowed` | Yes |
+| `Hydralisk` | `HydraliskBurrowed` | Yes |
+| `Infestor` | `InfestorBurrowed` | Yes |
+| `Ultralisk` | `UltraliskBurrowed` | Yes |
+| `Viper` | `ViperBurrowed` | Yes |
+
+**Workflow:** When modifying any Zerg unit cost, check sc2-units-reference for known variants. If the variant ID is not in the confirmed list above, **ask the user to verify the catalog ID** from the SC2 Data Editor before writing the `CUnit` override.
+
 ### Race supply cap (`RaceData.xml`)
 
 ```xml
@@ -268,6 +299,128 @@ Ability types map directly to XML element names:
     </InfoArray>
 </CAbilResearch>
 ```
+
+### Train ability (CAbilTrain) — unit production
+
+`CAbilTrain` controls which units a building can produce and how long each takes. Like `CAbilBuild`, each unit occupies a **sequential numeric slot** (`Train1`, `Train2`, etc.) — the slot number, NOT the unit's catalog ID.
+
+> **Critical pitfall:** Always use `Train1`, `Train2`, etc. Never use the unit catalog ID (e.g. `index="Marine"`) — that silently creates an unused entry.
+
+```xml
+<!-- Override Barracks train times -->
+<CAbilTrain id="BarracksTrain">
+    <InfoArray index="Train1" Time="2.5"/>   <!-- Marine -->
+    <InfoArray index="Train2" Time="3.2"/>   <!-- Reaper -->
+</CAbilTrain>
+```
+
+#### Void.SC2Mod Standard Train Slot Mapping (confirmed from Data Editor screenshots)
+
+> **All (None) slots are confirmed empty** — do not assign them. Skipping them in the XML override is correct and safe.
+
+**Terran — `CommandCenterTrain`** (CC / OC / PF):
+
+| Slot | Unit | Editor ID | Standard Time (s) |
+|---|---|---|---|
+| `Train1` | SCV | `SCV` | 17 |
+
+**Terran — `BarracksTrain`**:
+
+| Slot | Unit | Editor ID | Standard Time (s) |
+|---|---|---|---|
+| `Train1` | Marine | `Marine` | 25 |
+| `Train2` | Reaper | `Reaper` | 32 |
+| `Train3` | Ghost | `Ghost` | 29 |
+| `Train4` | Marauder | `Marauder` | 30 |
+
+**Terran — `FactoryTrain`**:
+
+| Slot | Unit | Editor ID | Standard Time (s) |
+|---|---|---|---|
+| `Train1` | *(None)* | — | — |
+| `Train2` | Siege Tank | `SiegeTank` | 32 |
+| `Train3` | *(None)* | — | — |
+| `Train4` | *(None)* | — | — |
+| `Train5` | Thor | `Thor` | 60 |
+| `Train6` | Hellion | `Hellion` | 30 |
+| `Train7` | Hellbat (Battle Mode) | `Hellbat` | 30 |
+| `Train8` | Cyclone | `Cyclone` | 36 |
+
+**Terran — `StarportTrain`**:
+
+| Slot | Unit | Editor ID | Standard Time (s) |
+|---|---|---|---|
+| `Train1` | Medivac | `Medivac` | 30 |
+| `Train2` | Banshee | `Banshee` | 43 |
+| `Train3` | Raven | `Raven` | 43 |
+| `Train4` | Battlecruiser | `Battlecruiser` | 90 |
+| `Train5` | Viking (Fighter Mode) | `Viking` | 32 |
+| `Train6` | *(None)* | — | — |
+| `Train7` | Liberator (AA) | `Liberator` | 43 |
+
+**Protoss — `NexusTrain`**:
+
+| Slot | Unit | Editor ID | Standard Time (s) |
+|---|---|---|---|
+| `Train1` | Probe | `Probe` | 17 |
+
+**Protoss — `GatewayTrain` and `WarpGateTrain`** (identical slot layout; both must be overridden together):
+
+| Slot | Unit | Editor ID | Standard Time (s) |
+|---|---|---|---|
+| `Train1` | Zealot | `Zealot` | 38 |
+| `Train2` | Stalker | `Stalker` | 42 |
+| `Train3` | *(None)* | — | — |
+| `Train4` | High Templar | `HighTemplar` | 55 |
+| `Train5` | Dark Templar | `DarkTemplar` | 55 |
+| `Train6` | Sentry | `Sentry` | 42 |
+| `Train7` | Adept | `Adept` | 40 |
+
+**Protoss — `RoboticsFacilityTrain`**:
+
+| Slot | Unit | Editor ID | Standard Time (s) |
+|---|---|---|---|
+| `Train1` | Warp Prism (Transport Mode) | `WarpPrism` | 36 |
+| `Train2` | Observer | `Observer` | 21 |
+| `Train3` | Colossus | `Colossus` | 54 |
+| `Train4` | Immortal | `Immortal` | 39 |
+
+**Protoss — `StargateTrain`**:
+
+| Slot | Unit | Editor ID | Standard Time (s) |
+|---|---|---|---|
+| `Train1` | Phoenix | `Phoenix` | 35 |
+| `Train2` | *(None)* | — | — |
+| `Train3` | Carrier | `Carrier` | 86 |
+| `Train4` | *(None)* | — | — |
+| `Train5` | Void Ray | `VoidRay` | 43 |
+| `Train6` | *(None)* | — | — |
+| `Train7` | *(None)* | — | — |
+| `Train8` | *(None)* | — | — |
+| `Train9` | Oracle | `Oracle` | 37 |
+| `Train10` | Tempest | `Tempest` | 54 |
+
+**Zerg — `LarvaWormhole`** (all larva morphs share one ability):
+
+| Slot | Unit | Editor ID | Standard Time (s) |
+|---|---|---|---|
+| `Train1` | Drone | `Drone` | 17 |
+| `Train2` | Zergling | `Zergling` | 24 |
+| `Train3` | Overlord | `Overlord` | 25 |
+| `Train4` | Hydralisk | `Hydralisk` | 33 |
+| `Train5` | Mutalisk | `Mutalisk` | 33 |
+| `Train6` | *(None)* | — | — |
+| `Train7` | Ultralisk | `Ultralisk` | 55 |
+| `Train8` | *(None)* | — | — |
+| `Train9` | *(None)* | — | — |
+| `Train10` | Roach | `Roach` | 27 |
+| `Train11` | Infestor (Spellcaster) | `Infestor` | 50 |
+| `Train12` | Corruptor | `Corruptor` | 40 |
+| `Train13` | Viper | `Viper` | 40 |
+| `Train14` | *(None)* | — | — |
+| `Train15` | Swarm Host | `SwarmHost` | 36 |
+
+---
 
 ### Build ability (CAbilBuild) — worker construction
 

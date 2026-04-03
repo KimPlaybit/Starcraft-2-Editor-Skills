@@ -173,11 +173,13 @@ This file lists all StarCraft II multiplayer units and structures with their **e
 | Greater Spire | `GreaterSpire` | WoL | Spire morph; enables Brood Lord |
 | Ultralisk Cavern | `UltraliskCavern` | WoL | Enables Ultralisk |
 | Nydus Network | `NydusNetwork` | WoL | Creates Nydus Canal tunnels anywhere on creep |
-| Spine Crawler | `SpineCrawler` | WoL | Ground-only defensive structure; can uproot and move |
-| Spore Crawler | `SporeCrawler` | WoL | Anti-air detector structure; can uproot and move |
+| Spine Crawler | `SpineCrawler` | WoL | Ground-only defensive structure; can uproot and move — uprooted form: `SpineCrawlerUprooted` |
+| Spore Crawler | `SporeCrawler` | WoL | Anti-air detector structure; can uproot and move — uprooted form: `SporeCrawlerUprooted` |
 | Creep Tumor | `CreepTumor` | WoL | Spreads creep; placed by Queen (burrowed) |
 | Creep Tumor (Burrowed) | `CreepTumorBurrowed` | WoL | Active spread state |
 | Lurker Den | `LurkerDen` | LotV | Enables Lurker morph from Hydralisk |
+
+> **Cost override pitfall — uprooted/burrowed variants:** Spine Crawler and Spore Crawler have separate uprooted CUnit entries (`SpineCrawlerUprooted`, `SporeCrawlerUprooted`). Most burrowed Zerg units also have a distinct CUnit catalog entry. If the variant's inherited cost is higher than the override on the primary unit, SC2 will charge the difference when transitioning. Always override both. If the variant catalog ID is not known, confirm it with the user before writing the override. See `sc2data-units-abilities` skill for the full pitfall table.
 
 ---
 
