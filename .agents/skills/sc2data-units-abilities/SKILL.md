@@ -196,6 +196,54 @@ Types: `CUnit`, `CUnitHero`
 | `PlacementRadius` | Footprint radius for placement |
 | `EditorCategories` | Organizational tags (Race, AbilityorEffectType, etc.) |
 
+### Terran flying building cost pitfall
+
+Several Terran buildings can **lift off** (fly). Each has a *separate* `CUnit` catalog entry with a `Flying` suffix. If the flying form's inherited cost is higher than the overridden grounded cost, **SC2 charges the difference when the building lifts off or lands**.
+
+**Rule:** whenever you override a Terran building's cost, also override its `Flying` variant to match.
+
+**Confirmed flying variants** (PlanetaryFortress cannot lift off and has NO flying variant):
+
+| Grounded CUnit | Flying CUnit |
+|---|---|
+| `CommandCenter` | `CommandCenterFlying` |
+| `OrbitalCommand` | `OrbitalCommandFlying` |
+| `Barracks` | `BarracksFlying` |
+| `Factory` | `FactoryFlying` |
+| `Starport` | `StarportFlying` |
+
+---
+
+### Terran alternate-state building cost pitfall
+
+Several Terran buildings have **alternate-state CUnit entries** that inherit the original base-mod cost. If the alternate state's inherited cost differs from your override, SC2 charges or refunds the difference when the state changes.
+
+**SupplyDepotLowered** — when a Supply Depot is lowered underground it becomes a separate `CUnit`. Always match its cost to `SupplyDepot`.
+
+| Primary CUnit | Alternate CUnit | Trigger |
+|---|---|---|
+| `SupplyDepot` | `SupplyDepotLowered` | Player lowers/raises depot |
+
+**TechLab add-on variants** — each building that can build a TechLab has its own CUnit (e.g. `BarracksTechLab`). Always match all three to the generic `TechLab` cost.
+
+| Generic CUnit | Building-specific CUnit |
+|---|---|
+| `TechLab` | `BarracksTechLab` |
+| `TechLab` | `FactoryTechLab` |
+| `TechLab` | `StarportTechLab` |
+
+**Reactor add-on variants** — same pattern as TechLab. Always match all three to the generic `Reactor` cost.
+
+| Generic CUnit | Building-specific CUnit |
+|---|---|
+| `Reactor` | `BarracksReactor` |
+| `Reactor` | `FactoryReactor` |
+| `Reactor` | `StarportReactor` |
+
+**Rule:** whenever you override `SupplyDepot`, `TechLab`, or `Reactor`, override all their variant CUnit IDs to match.
+
+---
+
 ### Zerg morph/burrowed unit cost pitfall
 
 When a Zerg unit can **uproot, burrow, or morph**, SC2 uses a *separate* `CUnit` catalog entry for the transformed form. If that alternate form's `CostResource` (inherited from the base mod) is higher than the primary form's overridden cost, **SC2 charges the mineral/vespene difference when the unit transitions between states**.
@@ -344,8 +392,8 @@ Ability types map directly to XML element names:
 | `Train5` | Thor | `Thor` | 60 |
 | `Train6` | Hellion | `Hellion` | 30 |
 | `Train7` | Hellbat (Battle Mode) | `Hellbat` | 30 |
-| `Train8` | Cyclone | `Cyclone` | 36 |
-
+| `Train8` | Cyclone | `Cyclone` | 36 || `Train9`–`Train24` | *(None)* | — | — |
+| `Train25` | Widow Mine | `WidowMine` | 40 |
 **Terran — `StarportTrain`**:
 
 | Slot | Unit | Editor ID | Standard Time (s) |
@@ -504,6 +552,13 @@ The three worker build abilities (`TerranBuild`, `ProtossBuild`, `ZergBuild`) ar
 | `Build16` | Spore Crawler | `SporeCrawler` | 21 |
 
 > **Morphs use CAbilMorph, not CAbilBuild:** Zerg tier upgrades (Lair, Hive, Greater Spire) and Terran CC upgrades (Orbital Command, Planetary Fortress) are `CAbilMorph` entries, not `CAbilBuild`. They have separate ability IDs and a different InfoArray key format.
+
+> **Morph cost pitfall — CUnit costs are cumulative:** SC2 calculates the mineral/vespene charged for a morph as `target CUnit cost − source CUnit cost`. If you reduce the source unit's cost (e.g. CommandCenter → 80M) but set the morph target (OrbitalCommand) to only its upgrade delta (30M), the game will *refund* the difference (30−80 = −50M). **Always set morph target CUnit cost to `source cost + upgrade delta`:**
+> - `OrbitalCommand` = CC(80M) + upgrade(30M) = **110M**
+> - `PlanetaryFortress` = CC(80M) + upgrade(30M) = **110M** minerals, 0V + 8V = **8V**
+> - `Lair` = Hatchery(60M) + upgrade(30M) = **90M**, 0V + 5V = **5V**
+> - `Hive` = Lair(90M) + upgrade(40M) = **130M**, 5V + 8V = **13V**
+> - `GreaterSpire` = Spire(40M) + upgrade(20M) = **60M**, 10V + 8V = **18V**
 
 ### Cost fields
 
