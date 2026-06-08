@@ -1,6 +1,6 @@
 ---
 name: galaxy-ui-and-dialogs
-description: Dialog and dialog control creation, XML frame hookup, hero/upgrade selection panels, scoreboard panels, dialog events, HUD messages, localized text, minimap pings, and the SSF hooked-frame UI pattern in Galaxy script. Use when building or updating any in-game UI: dialogs, buttons, labels, images, portraits, click handlers, or player-visible messages. Do not use for actor-based visuals (use galaxy-actor-and-visuals).
+description: Dialog and dialog control creation, XML frame hookup, hero/upgrade selection panels, scoreboard panels, dialog events, HUD messages, localized text, minimap pings, and the SSF hooked-frame UI pattern in Galaxy script. Use when building or updating any in-game UI such as dialogs, buttons, labels, images, portraits, click handlers, or player-visible messages. Do not use for actor-based visuals (use galaxy-actor-and-visuals).
 ---
 
 # Galaxy Scripting – UI & Dialogs
