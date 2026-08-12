@@ -4,7 +4,7 @@ A collection of GitHub Copilot agents and skills for StarCraft 2 map development
 
 ## Installation
 
-### Copilot CLI / Claude Code
+### Copilot CLI
 
 ```
 /plugin install sc2-editor@KimPlaybit/Starcraft-2-editor-skillset
@@ -17,13 +17,42 @@ Then confirm everything loaded:
 /agents
 ```
 
-### VS Code (manual)
+### Claude Code
+
+This skillset can also be used with **Claude Code**.
+Clone/download this repository and make the skillset available to Claude Code through the project's `your-project/.claude/` directory.
+A simple project structure can look like:
+
+```text
+your-project/
+├── .claude/
+│   └── skills/
+├── .agents/
+├── .github/
+└── ...
+```
+
+The `.agents/` and `.github/` folders are used by the GitHub Copilot setup described above. Claude Code uses `your-project/.claude/` for its own project-level skills.
+
+```text
+/skills
+```
+The same StarCraft 2 knowledge can then be used directly from Claude Code.
+
+## VS Code (manual installation)
 
 Copy the two folders into the **root of your own project**:
 
+#### Copilot
 ```
 .agents/       →  your-project/.agents/
 .github/       →  your-project/.github/
+```
+
+#### Claude
+```
+.agents/             →  your-project/.agents/
+.github/skills       →  your-project/.claude/skills
 ```
 
 Open VS Code with GitHub Copilot Chat enabled — no further configuration required.
@@ -74,3 +103,10 @@ Open VS Code with GitHub Copilot Chat enabled — no further configuration requi
 | `sc2data-behaviors-validators` | Behaviors, buffs, validators (XML) |
 | `sc2data-actors-visuals` | Actors, animations, sounds, actor events (XML) |
 | `sc2data-wizards` | Data Editor wizards (.BlizWiz) for automating data creation (XML) |
+
+---
+
+## Also Recommended
+
+If you're working with external packages or shared SC2 code, check out the **[SC2 Comet Package Manager](https://github.com/KimPlaybit/SC2-Comet-package-manager)** as well.
+
