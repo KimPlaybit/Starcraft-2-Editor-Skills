@@ -1,5 +1,5 @@
 ---
-name: Galaxy Combat & Units
+name: galaxy-combat-and-units
 description: Specialist for unit creation, combat mechanics, behaviors, XP/leveling, hero abilities, and unit group operations in Galaxy script.
 ---
 

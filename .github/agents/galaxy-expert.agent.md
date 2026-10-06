@@ -1,5 +1,5 @@
-﻿---
-name: Galaxy Scripting Expert
+---
+name: galaxy-expert
 description: General-purpose expert for SC2 Galaxy scripting in any StarCraft II map or mod.
 ---
 

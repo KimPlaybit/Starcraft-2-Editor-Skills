@@ -1,5 +1,5 @@
 ---
-name: Galaxy AI & Balance
+name: galaxy-ai-scripting
 description: Specialist for AI behavior, melee AI configuration, tech tree upgrades, wave scaling, and game balance mechanics in Galaxy script.
 ---
 

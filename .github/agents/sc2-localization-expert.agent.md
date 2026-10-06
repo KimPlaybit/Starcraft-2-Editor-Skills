@@ -1,5 +1,5 @@
 ---
-name: SC2 Localization Expert
+name: sc2-localization-expert
 description: Specialist for StarCraft II localization and text files. Works with GameStrings.txt, GameHotkeys.txt, ObjectStrings.txt, and TriggerStrings.txt across xxXX.SC2Data/LocalizedData folders; adds and fixes localized text; audits missing translations; and uses the Localization Editor SC2 KSP tool and sc2loc CLI diagnostics when available.
 ---
 

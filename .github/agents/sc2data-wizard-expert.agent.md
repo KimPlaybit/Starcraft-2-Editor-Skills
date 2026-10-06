@@ -1,5 +1,5 @@
 ---
-name: SC2 Data Wizard Expert
+name: sc2data-wizard-expert
 description: Specialist for creating and using wizards in the StarCraft II Data Editor. Designs .BlizWiz XML files to automate complex data creation/modification workflows, including user inputs, conditional logic, validations, and entry generation. NOT for direct data editing (use SC2 Data Editor Expert) or Galaxy scripting.
 ---
 

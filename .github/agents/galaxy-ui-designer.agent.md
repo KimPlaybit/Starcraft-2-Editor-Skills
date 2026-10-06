@@ -1,5 +1,5 @@
 ---
-name: Galaxy UI Designer
+name: galaxy-ui-designer
 description: Specialist for building in-game dialogs, scoreboards, hero selection screens, and all HUD elements in Galaxy script.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: Galaxy Naming Convention Enforcer
+name: galaxy-naming-convention
 description: Specialist for auditing and correcting Galaxy script naming conventions. Scans code for violations of the SC2-IngameDevTools handler-module style (the #1 PRIMARY reference) and rewrites identifiers to match the canonical conventions. Use when reviewing, auditing, or refactoring naming across a Galaxy project.
 tools:
   - codebase

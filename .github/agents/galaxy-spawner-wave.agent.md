@@ -1,5 +1,5 @@
 ---
-name: Galaxy Spawner & Wave Systems
+name: galaxy-spawner-wave
 description: Specialist for custom spawner, wave, and camp systems in Galaxy script. Handles enemy waves, respawn timers, resource rewards, and RTS player AI initialization.
 ---
 

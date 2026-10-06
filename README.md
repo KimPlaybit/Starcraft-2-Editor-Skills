@@ -1,6 +1,6 @@
 # StarCraft 2 Editor Skillset
 
-A collection of GitHub Copilot agents and skills for StarCraft 2 map development in VS Code — covering Galaxy scripting, the SC2 Data Editor, AI, UI, units, effects, actors, and more.
+A collection of GitHub Copilot and Claude Code agents and skills for StarCraft 2 map development in VS Code — covering Galaxy scripting, the SC2 Data Editor, AI, UI, units, effects, actors, and more.
 
 ## Installation
 
@@ -19,40 +19,29 @@ Then confirm everything loaded:
 
 ### Claude Code
 
-This skillset can also be used with **Claude Code**.
-Clone/download this repository and make the skillset available to Claude Code through the project's `your-project/.claude/` directory.
-A simple project structure can look like:
+The repository is also a Claude Code plugin marketplace. Add it and install the plugin:
 
-```text
-your-project/
-├── .claude/
-│   └── skills/
-├── .agents/
-├── .github/
-└── ...
+```
+/plugin marketplace add KimPlaybit/Starcraft-2-editor-skillset
+/plugin install sc2-editor@sc2-editor-skillset
 ```
 
-The `.agents/` and `.github/` folders are used by the GitHub Copilot setup described above. Claude Code uses `your-project/.claude/` for its own project-level skills.
+Then confirm everything loaded:
 
-```text
+```
 /skills
+/agents
 ```
-The same StarCraft 2 knowledge can then be used directly from Claude Code.
+
+Claude Code reads `.claude-plugin/plugin.json`, which points at the same `.agents/skills/` and `.github/agents/` folders used by Copilot. No files are duplicated, so Copilot and Claude always share the same content.
 
 ## VS Code (manual installation)
 
 Copy the two folders into the **root of your own project**:
 
-#### Copilot
 ```
 .agents/       →  your-project/.agents/
 .github/       →  your-project/.github/
-```
-
-#### Claude
-```
-.agents/             →  your-project/.agents/
-.github/skills       →  your-project/.claude/skills
 ```
 
 Open VS Code with GitHub Copilot Chat enabled — no further configuration required.
@@ -103,6 +92,11 @@ Open VS Code with GitHub Copilot Chat enabled — no further configuration requi
 | `sc2data-behaviors-validators` | Behaviors, buffs, validators (XML) |
 | `sc2data-actors-visuals` | Actors, animations, sounds, actor events (XML) |
 | `sc2data-wizards` | Data Editor wizards (.BlizWiz) for automating data creation (XML) |
+
+### Adding new agents or skills
+
+- **Skills:** drop a new folder with a `SKILL.md` into `.agents/skills/`. Both Copilot and Claude Code pick it up automatically.
+- **Agents:** add the `*.agent.md` file to `.github/agents/` **and** list its path under `agents` in `.claude-plugin/plugin.json`, because Claude Code only accepts explicit agent file paths. Use a kebab-case `name:` in the frontmatter, for example `name: galaxy-expert`. Claude Code skips agents whose names contain spaces.
 
 ---
 

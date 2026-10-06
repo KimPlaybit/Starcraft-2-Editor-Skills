@@ -1,0 +1,13 @@
+{
+  "name": "sc2-editor-skillset",
+  "owner": {
+    "name": "KimPlaybit"
+  },
+  "plugins": [
+    {
+      "name": "sc2-editor",
+      "source": "./",
+      "description": "StarCraft 2 map development skills and agents for Galaxy scripting and the SC2 Data Editor."
+    }
+  ]
+}

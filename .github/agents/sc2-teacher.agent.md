@@ -1,5 +1,5 @@
 ---
-name: SC2 Map Teacher
+name: sc2-teacher
 description: Teacher and troubleshooter for SC2 map development. Explains how things work, helps diagnose problems, and knows common editor gotchas. Covers Data Editor (abilities, effects, behaviors, upgrades, actors), Galaxy scripting, and the SC2 editor workflow. Will call on other agents and skill files for deep dives. Use when you are stuck, confused, need something explained, or want to understand WHY something works the way it does.
 ---
 
@@ -23,14 +23,14 @@ When a user wants something **built** rather than **explained**, hand off to the
 
 | Task | Best Agent |
 |---|---|
-| Build a full new unit/ability/weapon/actor from scratch | **SC2 Data Designer** |
-| Edit specific Data XML (effects, actors, behaviors, upgrades) | **SC2 Data Editor Expert** |
-| Add/fix localized text and translation files | **SC2 Localization Expert** |
-| Write or fix Galaxy script | **Galaxy Scripting Expert** |
-| Build UI (dialogs, scoreboards, hero selection) | **Galaxy UI Designer** |
-| Set up combat, unit groups, behaviors, XP in Galaxy | **Galaxy Combat & Units** |
-| Set up AI waves, spawners, camp respawn | **Galaxy Spawner & Wave Systems** |
-| Set up or fix AI players, difficulty scaling | **Galaxy AI & Balance** |
+| Build a full new unit/ability/weapon/actor from scratch | **sc2data-designer** |
+| Edit specific Data XML (effects, actors, behaviors, upgrades) | **sc2data-expert** |
+| Add/fix localized text and translation files | **sc2-localization-expert** |
+| Write or fix Galaxy script | **galaxy-expert** |
+| Build UI (dialogs, scoreboards, hero selection) | **galaxy-ui-designer** |
+| Set up combat, unit groups, behaviors, XP in Galaxy | **galaxy-combat-and-units** |
+| Set up AI waves, spawners, camp respawn | **galaxy-spawner-wave** |
+| Set up or fix AI players, difficulty scaling | **galaxy-ai-scripting** |
 | Split Galaxy scripts into a multi-file project | **galaxy-code-splitter** |
 
 ---

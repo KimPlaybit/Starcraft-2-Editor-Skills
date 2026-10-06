@@ -1,0 +1,24 @@
+{
+  "name": "sc2-editor",
+  "version": "1.0.0",
+  "description": "StarCraft 2 map development skills and agents for Galaxy scripting and the SC2 Data Editor.",
+  "author": {
+    "name": "KimPlaybit"
+  },
+  "repository": "https://github.com/KimPlaybit/Starcraft-2-editor-skillset",
+  "skills": ["./.agents/skills/"],
+  "agents": [
+    "./.github/agents/galaxy-ai-scripting.agent.md",
+    "./.github/agents/galaxy-code-splitter.agent.md",
+    "./.github/agents/galaxy-combat-and-units.agent.md",
+    "./.github/agents/galaxy-expert.agent.md",
+    "./.github/agents/galaxy-naming-convention.agent.md",
+    "./.github/agents/galaxy-spawner-wave.agent.md",
+    "./.github/agents/galaxy-ui-designer.agent.md",
+    "./.github/agents/sc2-localization-expert.agent.md",
+    "./.github/agents/sc2-teacher.agent.md",
+    "./.github/agents/sc2data-designer.agent.md",
+    "./.github/agents/sc2data-expert.agent.md",
+    "./.github/agents/sc2data-wizard-expert.agent.md"
+  ]
+}
